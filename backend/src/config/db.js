@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { getEnv } = require('./env');
 
-const dbURI = `mongodb://${getEnv('MONGO_URI')}`;
+const dbURI = getEnv('MONGO_URI');
 
 // Fonction pour se connecter à la base de données
 const connectDB = async () => {
@@ -12,6 +12,7 @@ const connectDB = async () => {
     });
     console.log('✅ MongoDB connecté');
   } catch (error) {
+    console.log(dbURI)
     console.error('❌ MongoDB connexion échoué:', error);
     process.exit(1);
   }
