@@ -1,0 +1,14 @@
+# Ignorer les fichiers et répertoires inutiles
+
+node_modules
+npm-debug.log
+*.md
+Dockerfile
+.dockerignore
+.env
+*.log
+*.git
+.git/
+*.test.js
+coverage/
+*.swp
