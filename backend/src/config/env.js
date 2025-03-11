@@ -2,7 +2,7 @@ require('dotenv').config();
 
 // Vérifier si toutes les variables d'environnement nécessaires sont présentes
 const requiredEnvVars = [
-  'MONGO_URI'
+  'MONGO_URI', 'JWT_SECRET'
 ];
 
 requiredEnvVars.forEach((envVar) => {
