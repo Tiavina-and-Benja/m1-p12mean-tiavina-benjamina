@@ -19,7 +19,7 @@
           "options": {
             "allowedCommonJsDependencies": ["apexcharts", "bezier-easing"],
             "outputPath": {
-              "base": "dist/materialm"
+              "base": "dist/frontend"
             },
             "index": "src/index.html",
             "polyfills": ["zone.js"],
