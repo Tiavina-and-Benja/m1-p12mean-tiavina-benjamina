@@ -1,9 +1,9 @@
-const User = require("../models/User");
-const hash = require("../utils/hash");
-const { getEnv } = require("../config/env");
+const User = require("@models/User");
+const hash = require("@utils/hash");
+const { getEnv } = require("@config/env");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { ERROR } = require("../errors/errors");
+const { ERROR } = require("@errors/errors");
 
 exports.register = async ({
   first_name,

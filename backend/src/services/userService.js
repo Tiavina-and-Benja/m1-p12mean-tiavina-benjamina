@@ -1,5 +1,5 @@
-const { ERROR } = require("../errors/errors");
-const User = require("../models/User");
+const { ERROR } = require("@errors/errors");
+const User = require("@models/User");
 const bcrypt = require("bcrypt");
 
 // Service pour créer un utilisateur
