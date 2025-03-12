@@ -4,7 +4,7 @@ const morgan = require("morgan");
 
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
-const errorMiddleware = require("./middlewares/errorMiddleware");
+const errorMiddleware = require("./middlewares/errorHandlerMiddleware");
 const connectDB = require("./config/db");
 
 const app = express();
@@ -18,6 +18,7 @@ app.use(morgan("dev")); // Logger les requêtes
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 // app.use("/api/auth", authRoutes);
 
 // Gestion des erreurs

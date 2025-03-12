@@ -1,3 +1,4 @@
+const { ERROR } = require("../errors/errors");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
@@ -6,7 +7,7 @@ exports.createUser = async (name, email, password) => {
   // Vérifier si l'utilisateur existe déjà
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    throw new Error("User already exists");
+    throw ERROR.RESOURCE_ALREADY_EXISTS("L'utilisateur existe déjà");
   }
 
   // Hacher le mot de passe avant de le sauvegarder
