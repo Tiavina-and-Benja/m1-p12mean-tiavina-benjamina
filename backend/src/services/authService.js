@@ -1,9 +1,9 @@
-const User = require("../models/User");
-const hash = require("../utils/hash");
-const { getEnv } = require("../config/env");
+const User = require("@models/User");
+const hash = require("@utils/hash");
+const { getEnv } = require("@config/env");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { ERROR } = require("../errors/errors");
+const { ERROR } = require("@errors/errors");
 
 exports.register = async ({
   first_name,
@@ -32,12 +32,11 @@ exports.register = async ({
 
 exports.login = async ({ email, password, profil }) => {
   const user = await User.findOne({ email });
-  if (!user) throw ERROR.NOT_FOUND("Utilisateur non trouvé");
+  if (!user) throw ERROR.NOT_FOUND("Utilisateur non trouvé", "user_not_found", {email: "Utilisateur non trouvé"});
+  if (user.profil !== profil) throw ERROR.NOT_FOUND("Utilisateur non trouvé", "user_not_found", {email: "Utilisateur non trouvé"}); 
 
-  if (user.profil !== profil) throw ERROR.FORBIDDEN;
-
-  const isMatch = bcrypt.compare(password, user.password);
-  if (!isMatch) throw ERROR.NOT_AUTHORIZED("Mot de passe est incorrect");
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) throw ERROR.NOT_AUTHORIZED("Mot de passe est incorrect", "wrong_password", {password: "Mot de passe erroné"});
 
   const userData = user.toObject();
   delete userData.password;
@@ -55,11 +54,11 @@ exports.login = async ({ email, password, profil }) => {
 };
 
 exports.checkToken = async (token) => {
-  if (!token) throw ERROR.NOT_AUTHORIZED;
+  if (!token) throw ERROR.NOT_AUTHORIZED();
   try {
     const verified = jwt.verify(token, getEnv("JWT_SECRET"));
     return verified;
   } catch (error) {
-    throw ERROR.FORBIDDEN;
+    throw ERROR.FORBIDDEN();
   }
 };

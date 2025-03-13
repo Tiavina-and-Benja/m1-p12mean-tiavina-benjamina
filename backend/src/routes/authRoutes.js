@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const authController = require("../controllers/authController");
-const {
-  authenticateToken,
-  authorizeProfils,
-} = require("../middlewares/authMiddleware");
+const authController = require("@controllers/authController");
+
+
+const authenticateToken = require("@middlewares/authMiddleware");
+const authorizeProfils = require("@middlewares/roleMiddleware");
 
 router.post("/register", (req, res, next) =>
   authController.register(req, res, next)
@@ -17,7 +17,7 @@ router.post(
   authenticateToken,
   authorizeProfils(["manager"]),
   (req, res, next) => {
-    req.profil = "mecanicien";
+    req.body.profil = "mecanicien";
     authController.register(req, res, next);
   }
 );
