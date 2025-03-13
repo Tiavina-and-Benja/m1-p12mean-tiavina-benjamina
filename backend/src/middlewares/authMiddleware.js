@@ -12,7 +12,7 @@ const authenticateToken = (req, res, next) => {
       next();
     })
     .catch((err) => {
-      if (err instanceof MyError) {
+      if (err instanceof Error) {
         res.status(err.statusCode).json({ message: err.message });
       } else {
         next(err);

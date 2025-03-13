@@ -17,7 +17,7 @@ router.post(
   authenticateToken,
   authorizeProfils(["manager"]),
   (req, res, next) => {
-    req.profil = "mecanicien";
+    req.body.profil = "mecanicien";
     authController.register(req, res, next);
   }
 );

@@ -7,7 +7,7 @@ exports.createUser = async (name, email, password) => {
   // Vérifier si l'utilisateur existe déjà
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    throw ERROR.RESOURCE_ALREADY_EXISTS("L'utilisateur existe déjà");
+    throw ERROR.RESOURCE_ALREADY_EXISTS("L'utilisateur existe déjà", 'user_already_exist');
   }
 
   // Hacher le mot de passe avant de le sauvegarder

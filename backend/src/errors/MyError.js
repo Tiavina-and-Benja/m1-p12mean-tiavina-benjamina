@@ -1,8 +1,11 @@
 class MyError extends Error {
-    constructor({message, statusCode}) {
+    constructor({ message, statusCode = 500, type = "server_error" }) {
         super(message);
-        this.name = "MyError";
+        this.name = this.constructor.name;
         this.statusCode = statusCode;
-        this.stack = (new Error()).stack;
+        this.type = type;
+        Error.captureStackTrace(this, this.constructor);
     }
 }
+
+module.exports = MyError;
