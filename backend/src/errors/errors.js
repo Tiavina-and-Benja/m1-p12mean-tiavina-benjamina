@@ -18,7 +18,7 @@ export const ERROR = {
   UNPROCESSABLE_ENTITY: (message = "Entité non traitable", type = "unprocessable_entity") => createError(422, message, type),
   CONFLICT: (message = "Conflit de données", type = "conflict") => createError(409, message, type),
   UNAUTHORIZED_ACCESS: (message = "Accès non autorisé", type = "unauthorized_access") => createError(401, message, type),
-  RESOURCE_ALREADY_EXISTS: (message = "La ressource existe déjà", type = "resource_exists") => createError(409, message, type),
+  RESOURCE_ALREADY_EXISTS: (message = "La ressource existe déjà", type = "resource_exists", errors = undefined) => createError(409, message, type, errors),
   TOKEN_EXPIRED: (message = "Le token d'authentification a expiré", type = "token_expired") => createError(401, message, type),
   INVALID_CREDENTIALS: (message = "Identifiants invalides", type = "invalid_credentials") => createError(401, message, type),
   METHOD_NOT_ALLOWED: (message = "Méthode non autorisée", type = "method_not_allowed") => createError(405, message, type),

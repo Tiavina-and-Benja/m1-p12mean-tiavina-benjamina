@@ -36,6 +36,7 @@ export class UserLoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin(): void {
+    if (this.email.invalid || this.password.invalid) return;
     this.authService
       .login(this.email.value || '', this.password.value || '')
       .subscribe({
