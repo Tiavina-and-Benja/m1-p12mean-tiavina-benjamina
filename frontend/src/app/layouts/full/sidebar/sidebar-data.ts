@@ -10,7 +10,17 @@ export const navItems: NavItem[] = [
     route: '/dashboard',
     roles: ['user', 'manager', 'mecanicien']
   },
-
+  {
+    navCap: 'Equipe',
+    divider: true,
+    roles: ['manager']
+  },
+  {
+    displayName: 'Mécaniciens',
+    iconName: 'solar:archive-minimalistic-line-duotone',
+    route: '/manager/mechanics',
+    roles: ['manager']
+  },
   {
     navCap: 'Ui Components',
     divider: true,

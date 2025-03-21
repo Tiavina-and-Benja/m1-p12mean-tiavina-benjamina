@@ -90,7 +90,6 @@ export class FullComponent implements OnInit {
   ngOnInit(): void {
     this.authService.role$.subscribe(role => {
       this.role = role;
-      console.log("NEW_ROLE", this.role);
     });
   }
 

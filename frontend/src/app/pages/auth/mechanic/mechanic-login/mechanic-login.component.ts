@@ -25,16 +25,17 @@ import { AuthService } from '@services/auth.service';
 export class MechanicLoginComponent {
   email: FormControl = new FormControl('tiavina.mechanic@gmail.com', [Validators.required]);
   password: FormControl = new FormControl('123', [Validators.required]);
+  isLoading: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin(): void {
+    this.isLoading = true;
     this.authService
       .login(this.email.value || '', this.password.value || '', 'mecanicien')
       .subscribe({
         next: (response) => {
-          const { token } = response;
-          localStorage.setItem('token', token);
+          this.isLoading = false;
           this.router.navigate(['/dashboard']);
         },
         error: (err) => {
@@ -46,6 +47,7 @@ export class MechanicLoginComponent {
             if (apiErrors.password)
               this.password.setErrors({ apiError: apiErrors.password });
           }
+          this.isLoading = false;
         },
       });
   }

@@ -28,6 +28,7 @@ import { AuthService } from '@services/auth.service';
   styleUrl: './user-login.component.scss',
 })
 export class UserLoginComponent {
+  isLoading: boolean = false;
   email: FormControl = new FormControl('tiavinaramia@gmail.com', [
     Validators.required,
   ]);
@@ -36,10 +37,13 @@ export class UserLoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin(): void {
+    if (this.email.invalid || this.password.invalid) return;
+    this.isLoading = true;
     this.authService
       .login(this.email.value || '', this.password.value || '')
       .subscribe({
         next: (response) => {
+          this.isLoading = false;
           this.router.navigate(['/dashboard']);
         },
         error: (err) => {
@@ -51,6 +55,7 @@ export class UserLoginComponent {
             if (apiErrors.password)
               this.password.setErrors({ apiError: apiErrors.password });
           }
+          this.isLoading = false;
         },
       });
   }

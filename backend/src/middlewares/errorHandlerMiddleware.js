@@ -1,5 +1,5 @@
-const { getEnv } = require("@config/env");
-const { ValidationError } = require("@errors/ValidationError");
+const { getEnv } = require("../config/env");
+const { ValidationError } = require("../errors/ValidationError");
 
 const errorMiddleware = (err, req, res, next) => {
   console.error(err.stack);

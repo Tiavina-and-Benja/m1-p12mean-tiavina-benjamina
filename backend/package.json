@@ -5,7 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "seedManager": "node src/seeds/seedManager.js",
+    "seedUser": "node src/seeds/seedUser.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
     "nodemon": "^3.1.9"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.6.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "body-parser": "^1.20.3",
@@ -24,6 +27,7 @@
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "mongoose": "^8.12.1",
+    "mongoose-paginate-v2": "^1.9.0",
     "morgan": "^1.10.0"
   },
   "_moduleAliases": {

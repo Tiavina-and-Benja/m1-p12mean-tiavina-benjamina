@@ -56,12 +56,7 @@
               >Address électronique</mat-label
             >
             <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input
-                matInput
-                name="email"
-                [formControl]="email"
-                required
-              />
+              <input matInput name="email" [formControl]="email" required />
               <mat-error *ngIf="email.hasError('required')">
                 L'email est requis.
               </mat-error>
@@ -69,7 +64,7 @@
                 Email invalide.
               </mat-error>
               <mat-error *ngIf="email.hasError('apiError')">
-                {{ email.getError('apiError') }}
+                {{ email.getError("apiError") }}
               </mat-error>
             </mat-form-field>
             <!-- password -->
@@ -88,7 +83,7 @@
                 Le mot de passe est requis.
               </mat-error>
               <mat-error *ngIf="password.hasError('apiError')">
-                {{ password.getError('apiError') }}
+                {{ password.getError("apiError") }}
               </mat-error>
             </mat-form-field>
 
@@ -108,7 +103,8 @@
               class="w-100"
               [disabled]="userLoginForm.invalid"
             >
-              Sign In
+              <span *ngIf="!isLoading">Sign In</span>
+              <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
             </button>
             <!-- input -->
           </form>

@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import * as jwt_decode from 'jwt-decode';
 import { environment } from '@environments/environment';
 import { LoginResponse } from '@app/models/auth.model';
+import { User } from '@app/models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,8 @@ export class AuthService {
     localStorage.removeItem('token');
   }
 
-  register(userData: any, role: string = ''): Observable<any> {
-    return this.http.post<any>(`/api/auth/register/${role}`, userData);
+  register(userData: User, role: string = ''): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register${role ? '/' + role : ''}`, userData);
   }
 
   decodeToken(token: string): any {
