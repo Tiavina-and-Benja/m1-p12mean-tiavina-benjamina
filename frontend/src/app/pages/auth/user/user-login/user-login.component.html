@@ -103,7 +103,8 @@
               class="w-100"
               [disabled]="userLoginForm.invalid"
             >
-              Sign In
+              <span *ngIf="!isLoading">Sign In</span>
+              <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
             </button>
             <!-- input -->
           </form>

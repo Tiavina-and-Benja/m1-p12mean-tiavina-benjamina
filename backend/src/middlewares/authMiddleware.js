@@ -1,5 +1,5 @@
-const { checkToken } = require("@services/authService");
-const MyError = require("@errors/MyError");
+const { checkToken } = require("../services/authService");
+const MyError = require("../errors/MyError");
 
 // Vérifie si le token JWT est valide
 const authenticateToken = (req, res, next) => {
@@ -13,7 +13,7 @@ const authenticateToken = (req, res, next) => {
     })
     .catch((err) => {
       if (err instanceof Error) {
-        res.status(err.statusCode).json({ message: err.message });
+        res.status(err.statusCode || 401).json({ message: err.message });
       } else {
         next(err);
       }

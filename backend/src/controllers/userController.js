@@ -1,31 +1,43 @@
-const userService = require('@services/userService');
+const User = require("../models/User");
+const UserService = require("../services/userService");
+const { hashPassword } = require("../utils/hash");
 
-exports.register = async (req, res, next) => {
+exports.getUsers = async (req, res, next) => {
+  const { page, limit, profil, sortField, sortOrder, search } = req.query;
   try {
-    const { name, email, password } = req.body;
-
-    // Appel du service pour créer un utilisateur
-    const user = await userService.createUser(name, email, password);
-
-    res.status(201).json({ message: 'Utilisateur enregistré avec succés', user });
+    const users = await UserService.findUsersPaginated(
+      { profil: profil },
+      {
+        page,
+        limit,
+        sort: {
+          field: sortField,
+          order: sortOrder,
+        },
+        search
+      }
+    );
+    res.status(200).json(users);
   } catch (error) {
     next(error);
   }
 };
 
-exports.getUser = async (req, res, next) => {
+exports.addUser = async (req, res, next) => {
+  const { first_name, last_name, email, phone, password, profil } = req.body;
   try {
-    const { email } = req.params;
-
-    // Appel du service pour récupérer un utilisateur
-    const user = await userService.getUserByEmail(email);
-    if (!user) {
-      return res.status(404).json({ message: 'Utilisateur non trouvé' });
-    }
-
-    res.json(user);
+    const hashedPassword = await hashPassword(password);
+    const user = new User({
+      first_name,
+      last_name,
+      email,
+      phone,
+      password: hashedPassword,
+      profil,
+    });
+    await UserService.createUser(user);
+    res.status(201).json(user);
   } catch (error) {
-    error.status = 500;
     next(error);
   }
 };

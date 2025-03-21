@@ -1,0 +1,42 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-content class="b-t-1">
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- Input search -->
+      <mat-form-field appearance="outline" class="no-hint-space">
+        <mat-label>Rechercher</mat-label>
+        <input
+          matInput
+          placeholder="Saisissez votre recherche"
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+        />
+        <button matSuffix mat-icon-button aria-label="Effacer" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Button Ajouter un mécanicien -->
+      <button
+        mat-flat-button
+        color="primary"
+        class="ml-3"
+        (click)="openAddMechanicDialog()"
+      >
+        Ajouter un mécanicien
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>
+<app-mechanic-table
+  [dataSource]="dataSource"
+  [displayedColumns]="displayedColumns"
+  [totalItems]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  (onSortChange)="onSortChange($event)"
+  (onPageChange)="onPageChange($event)"
+  (editMechanic)="openEditMechanicDialog($event)"
+  (deleteMechanic)="openDeleteMechanicDialog($event)"
+>
+</app-mechanic-table>

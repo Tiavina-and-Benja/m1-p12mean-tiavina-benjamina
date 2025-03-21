@@ -23,6 +23,7 @@ import { CommonModule } from '@angular/common';
 export class UserRegisterComponent {
   options = this.settings.getOptions();
   hide = signal(true);
+  isLoading: boolean = false;
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
@@ -48,11 +49,13 @@ export class UserRegisterComponent {
 
   onRegister() {
     if (this.form.invalid) return;
-    const {first_name, last_name, email, phone, password} = this.form.value;
+    const { first_name, last_name, email, phone, password } = this.form.value;
+    this.isLoading = true;
     this.authService
       .register({ first_name, last_name, email, phone, password })
       .subscribe({
         next: () => {
+          this.isLoading = false;
           this.router.navigate(['/auth/login']);
         },
         error: (err) => {
@@ -64,9 +67,9 @@ export class UserRegisterComponent {
                 this.f[formField].setErrors({ apiError: apiErrors[field] });
               }
             });
+            this.isLoading = false;
           }
         },
       });
-    // this.router.navigate(['/']);
   }
 }
