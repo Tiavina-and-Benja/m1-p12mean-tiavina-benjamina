@@ -1,0 +1,91 @@
+<!-- user-add-dialog.component.html -->
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="first_name" placeholder="Prénom" />
+      <mat-error *ngIf="userForm.get('first_name')?.invalid">
+        {{ getErrorMessage("first_name") }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="last_name" placeholder="Nom" />
+      <mat-error *ngIf="userForm.get('last_name')?.invalid">
+        {{ getErrorMessage("last_name") }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        formControlName="email"
+        placeholder="exemple@domaine.com"
+        type="email"
+      />
+      <mat-icon matSuffix>email</mat-icon>
+      <mat-error *ngIf="userForm.get('email')?.invalid">
+        {{ getErrorMessage("email") }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Téléphone</mat-label>
+      <input matInput formControlName="phone" placeholder="0123456789" />
+      <mat-icon matSuffix>phone</mat-icon>
+      <mat-error *ngIf="userForm.get('phone')?.invalid">
+        {{ getErrorMessage("phone") }}
+      </mat-error>
+    </mat-form-field>
+
+    <div class="password-field-container">
+      <mat-form-field appearance="outline" class="password-field  w-100">
+        <mat-label>Mot de passe</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          [type]="hidePassword ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hidePassword = !hidePassword"
+          type="button"
+        >
+          <mat-icon>{{
+            hidePassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+        <mat-error *ngIf="userForm.get('password')?.invalid">
+          {{ getErrorMessage("password") }}
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        *ngIf="isEditMode && userForm.get('password')?.disabled"
+        mat-button
+        color="primary"
+        type="button"
+        class="change-password-btn"
+        (click)="enablePasswordEdit()"
+      >
+        Modifier le mot de passe
+      </button>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" type="button">Annuler</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="userForm.invalid"
+    >
+      {{ isEditMode ? "Mettre à jour" : "Ajouter" }}
+    </button>
+  </mat-dialog-actions>
+</form>

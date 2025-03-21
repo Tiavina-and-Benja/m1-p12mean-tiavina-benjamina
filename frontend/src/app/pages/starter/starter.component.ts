@@ -21,4 +21,4 @@ import { AppEarningReportsComponent } from 'src/app/components/earning-reports/e
   templateUrl: './starter.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class StarterComponent { }
+export class  StarterComponent { }

@@ -1,24 +1,170 @@
-const { ERROR } = require("../errors/errors");
+// services/user.service.js
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
+const ERROR = require("../errors/errors");
 
-// Service pour créer un utilisateur
-exports.createUser = async (name, email, password) => {
-  // Vérifier si l'utilisateur existe déjà
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    throw ERROR.RESOURCE_ALREADY_EXISTS("L'utilisateur existe déjà");
+class UserService {
+  /**
+   * Récupère tous les utilisateurs
+   * @returns {Promise<Array>} Liste des utilisateurs
+   */
+  async getAllUsers() {
+    try {
+      return await User.find();
+    } catch (error) {
+      throw new Error(
+        `Erreur lors de la récupération des utilisateurs: ${error.message}`
+      );
+    }
   }
 
-  // Hacher le mot de passe avant de le sauvegarder
-  const hashedPassword = await bcrypt.hash(password, 10);
+  /**
+   * Récupère un utilisateur par son ID
+   * @param {string} id - ID de l'utilisateur
+   * @returns {Promise<Object>} Utilisateur trouvé
+   */
+  async getUserById(id) {
+    try {
+      const user = await User.findById(id);
+      if (!user) {
+        throw new Error("Utilisateur non trouvé");
+      }
+      return user;
+    } catch (error) {
+      throw new Error(
+        `Erreur lors de la recherche de l'utilisateur: ${error.message}`
+      );
+    }
+  }
 
-  // Créer et enregistrer l'utilisateur
-  const newUser = new User({ name, email, password: hashedPassword });
-  return await newUser.save();
-};
+  /**
+   * Crée un nouvel utilisateur
+   * @param {User} userData - Données de l'utilisateur
+   * @returns {Promise<Object>} Utilisateur créé
+   */
+  async createUser(userData) {
+    try {
+      // Vérifier si l'email existe déjà
+      const existingUser = await User.findOne({
+        email: userData.email,
+        profil: userData.profil,
+      });
+      if (existingUser) {
+        throw ERROR;
+      }
 
-// Service pour récupérer un utilisateur par email
-exports.getUserByEmail = async (email) => {
-  return await User.findOne({ email });
-};
+      const newUser = new User(userData);
+      return await newUser.save();
+    } catch (error) {
+      throw new Error(
+        `Erreur lors de la création de l'utilisateur: ${error.message}`
+      );
+    }
+  }
+
+  /**
+   * Met à jour un utilisateur existant
+   * @param {string} id - ID de l'utilisateur
+   * @param {Object} updateData - Données à mettre à jour
+   * @returns {Promise<Object>} Utilisateur mis à jour
+   */
+  async updateUser(id, updateData) {
+    try {
+      // Ajouter la date de mise à jour
+      updateData.updated_at = Date.now();
+
+      const user = await User.findByIdAndUpdate(id, updateData, {
+        new: true,
+        runValidators: true,
+      });
+
+      if (!user) {
+        throw new Error("Utilisateur non trouvé");
+      }
+
+      return user;
+    } catch (error) {
+      throw new Error(
+        `Erreur lors de la mise à jour de l'utilisateur: ${error.message}`
+      );
+    }
+  }
+
+  /**
+   * Supprime un utilisateur
+   * @param {string} id - ID de l'utilisateur
+   * @returns {Promise<boolean>} Succès de la suppression
+   */
+  async deleteUser(id) {
+    try {
+      const result = await User.findByIdAndDelete(id);
+
+      if (!result) {
+        throw new Error("Utilisateur non trouvé");
+      }
+
+      return true;
+    } catch (error) {
+      throw new Error(
+        `Erreur lors de la suppression de l'utilisateur: ${error.message}`
+      );
+    }
+  }
+
+  /**
+   * Recherche des utilisateurs selon certains critères
+   * @param {Object} criteria - Critères de recherche
+   * @returns {Promise<Array>} Liste des utilisateurs correspondants
+   */
+  async findUsers(criteria) {
+    try {
+      return await User.find(criteria);
+    } catch (error) {
+      throw new Error(
+        `Erreur lors de la recherche d'utilisateurs: ${error.message}`
+      );
+    }
+  }
+
+  async findUsersPaginated(criteria, { page, limit, sort, search }) {
+    try {
+      page = parseInt(page);
+      limit = parseInt(limit);
+      
+      const dynamicSort =
+        sort && sort.field !== ""
+          ? { [sort.field]: sort.order === "desc" ? -1 : 1 }
+          : { createdAt: -1 };
+
+      if (search) {
+        criteria = {
+          ...criteria,
+          $text: { $search: search },
+        };
+      }
+
+      const users = await User.paginate(criteria, {
+        page,
+        limit,
+        select: "-password",
+        sort: dynamicSort,
+      });
+      return users;
+    } catch (error) {
+      throw new Error(
+        `Erreur lors de la recherche d'utilisateurs: ${error.message}`
+      );
+    }
+  }
+
+  async findOneUser(criteria) {
+    try {
+      return await User.findOne(criteria);
+    } catch (error) {
+      throw new Error(
+        `Erreur lors de la recherche d'utilisateurs: ${error.message}`
+      );
+    }
+  }
+}
+
+module.exports = new UserService();

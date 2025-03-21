@@ -15,6 +15,7 @@ import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AppNavItemComponent } from './sidebar/nav-item/nav-item.component';
 import { navItems } from './sidebar/sidebar-data';
+import { AuthService } from '@app/services/auth.service';
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
@@ -38,6 +39,7 @@ const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
 })
 export class FullComponent implements OnInit {
   navItems = navItems;
+  role: string | null = null;
 
   @ViewChild('leftsidenav')
   public sidenav: MatSidenav;
@@ -60,6 +62,7 @@ export class FullComponent implements OnInit {
     private settings: CoreService,
     private router: Router,
     private breakpointObserver: BreakpointObserver,
+    private authService: AuthService
   ) {
     this.htmlElement = document.querySelector('html')!;
     this.layoutChangesSubscription = this.breakpointObserver
@@ -84,7 +87,11 @@ export class FullComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.role$.subscribe(role => {
+      this.role = role;
+    });
+  }
 
   ngOnDestroy() {
     this.layoutChangesSubscription.unsubscribe();
