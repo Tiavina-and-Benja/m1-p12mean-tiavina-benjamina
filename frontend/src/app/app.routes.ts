@@ -4,7 +4,6 @@ import { FullComponent } from './layouts/full/full.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RoleGuard } from './guards/role.guard';
 import { NotAuthGuard } from './guards/not-auth.guard';
-import { ListMechanicComponent } from './pages/crud-mechanic/list-mechanic/list-mechanic.component';
 import { MechanicCrudComponent } from './pages/mechanic-crud/mechanic-crud.component';
 
 export const routes: Routes = [
