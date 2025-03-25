@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
-mongoose.connect('mongodb://localhost:27017/garace-agency', {
+mongoose.connect('mongodb://localhost:27017/garage-agency', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {

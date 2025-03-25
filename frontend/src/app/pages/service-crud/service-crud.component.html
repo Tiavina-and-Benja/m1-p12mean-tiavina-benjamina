@@ -7,10 +7,15 @@
         <input
           matInput
           placeholder="Saisissez votre recherche"
-          [(ngModel)]="searchTerm"
+          [(ngModel)]="searchText"
           (input)="onSearch()"
         />
-        <button matSuffix mat-icon-button aria-label="Effacer" (click)="clearSearch()">
+        <button
+          matSuffix
+          mat-icon-button
+          aria-label="Effacer"
+          (click)="clearSearch()"
+        >
           <mat-icon>close</mat-icon>
         </button>
         <mat-icon matPrefix>search</mat-icon>
@@ -23,20 +28,19 @@
         class="ml-3"
         (click)="openAddMechanicDialog()"
       >
-        Ajouter un mécanicien
+        Ajouter un service
       </button>
     </div>
   </mat-card-content>
 </mat-card>
-<app-mechanic-table
+<app-service-crud-table
   [dataSource]="dataSource"
   [displayedColumns]="displayedColumns"
-  [totalItems]="totalItems"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="pageSizeOptions"
+  [totalItems]="paginator.totalItems"
+  [pageSize]="paginator.pageSize"
+  [pageSizeOptions]="paginator.pageSizeOptions"
   (onSortChange)="onSortChange($event)"
   (onPageChange)="onPageChange($event)"
-  (editMechanic)="openEditMechanicDialog($event)"
-  (deleteMechanic)="openDeleteMechanicDialog($event)"
->
-</app-mechanic-table>
+  (edit)="openEditMechanicDialog($event)"
+  (delete)="openDeleteMechanicDialog($event)"
+/>

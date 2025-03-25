@@ -13,3 +13,10 @@ export interface Paginated {
   prevPage: number | null;
   nextPage: number | null;
 }
+
+export interface Paginator {
+  currentPage: number;
+  pageSize: number;
+  pageSizeOptions: number[];
+  totalItems: number;
+}
