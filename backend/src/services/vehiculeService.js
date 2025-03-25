@@ -18,9 +18,9 @@ class VehiculeService {
     return await Vehicule.findOneAndUpdate({ id }, data, { new: true, runValidators: true });
   }
 
-  async deleteVehicule(id) {
-    return await Vehicule.findOneAndDelete({ id });
-  }
+  // async deleteVehicule(id) {
+  //   return await Vehicule.findOneAndDelete({ id });
+  // }
 }
 
 module.exports = new VehiculeService();

@@ -6,8 +6,8 @@ const authorizeProfils = require("../middlewares/roleMiddleware");
 
 router.get("/", authenticateToken, vehiculeController.getVehicules);
 router.get("/:id", authenticateToken, vehiculeController.getVehiculeById);
-router.post("/", authenticateToken, authorizeProfils(["manager"]), vehiculeController.addVehicule);
-router.put("/:id", authenticateToken, authorizeProfils(["manager"]), vehiculeController.updateVehicule);
-router.delete("/:id", authenticateToken, authorizeProfils(["manager"]), vehiculeController.deleteVehicule);
+router.post("/", authenticateToken, authorizeProfils(["user"]), vehiculeController.addVehicule);
+router.put("/:id", authenticateToken, authorizeProfils(["user"]), vehiculeController.updateVehicule);
+// router.delete("/:id", authenticateToken, authorizeProfils(["user"]), vehiculeController.deleteVehicule);
 
 module.exports = router;
