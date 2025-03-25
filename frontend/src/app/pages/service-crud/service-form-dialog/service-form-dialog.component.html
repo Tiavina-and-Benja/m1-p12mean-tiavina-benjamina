@@ -1,0 +1,41 @@
+<!-- user-add-dialog.component.html -->
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="name" placeholder="Nom" />
+      <mat-error *ngIf="serviceForm.get('name')?.invalid">
+        {{ getErrorMessage("name") }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Prix</mat-label>
+      <input matInput formControlName="price" placeholder="Prix" />
+      <mat-error *ngIf="serviceForm.get('price')?.invalid">
+        {{ getErrorMessage("price") }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" placeholder="Nom" />
+      <mat-error *ngIf="serviceForm.get('description')?.invalid">
+        {{ getErrorMessage("description") }}
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" type="button">Annuler</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="serviceForm.invalid"
+    >
+      {{ isEditMode ? "Mettre à jour" : "Ajouter" }}
+    </button>
+  </mat-dialog-actions>
+</form>

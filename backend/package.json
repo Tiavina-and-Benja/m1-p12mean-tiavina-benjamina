@@ -7,7 +7,8 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "seedManager": "node src/seeds/seedManager.js",
-    "seedUser": "node src/seeds/seedUser.js"
+    "seedUser": "node src/seeds/seedUser.js",
+    "seedService": "node src/seeds/seedService.js"
   },
   "keywords": [],
   "author": "",

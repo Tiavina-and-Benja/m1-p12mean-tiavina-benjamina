@@ -1,8 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormsModule } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { MaterialModule } from '@app/material.module';
 
@@ -17,14 +17,13 @@ import { Sort } from '@angular/material/sort';
 import { MechanicTableComponent } from './mechanic-table/mechanic-table.component';
 import { MechanicDeleteDialogComponent } from './mechanic-delete-dialog/mechanic-delete-dialog.component';
 
-import { debounceTime, switchMap, distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'app-mechanic-crud',
   imports: [FormsModule, MaterialModule, MechanicTableComponent],
   templateUrl: './mechanic-crud.component.html',
   styleUrl: './mechanic-crud.component.scss',
 })
-export class MechanicCrudComponent {
+export class MechanicCrudComponent implements OnInit{
   displayedColumns: string[] = [
     'first_name',
     'last_name',
