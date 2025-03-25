@@ -70,6 +70,10 @@ class AuthService {
       throw ERROR.FORBIDDEN();
     }
   }
+
+  async getUser(token) {
+    return jwt.decode(token);
+  }
 }
 
 module.exports = new AuthService()

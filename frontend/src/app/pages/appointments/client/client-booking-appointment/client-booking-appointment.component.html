@@ -1,0 +1,113 @@
+<mat-card class="cardWithShadow">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">Demande de rendez-vous</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="appointmentForm">
+      <mat-horizontal-stepper [linear]="true">
+        <!-- Étape 1 : Choix des services -->
+        <mat-step [label]="'Services'">
+          <h5>Définissez les services à effectuer</h5>
+
+          <!-- Liste des services avec checkbox -->
+          <div *ngFor="let service of services">
+            <mat-checkbox
+              [checked]="selectedServices.includes(service.id || '')"
+              (change)="toggleService(service.id || '', $event.checked)"
+            >
+              {{ service.name }}
+            </mat-checkbox>
+          </div>
+
+          <!-- Affichage des services sélectionnés -->
+          <h6>Services sélectionnés :</h6>
+          <mat-chip-set>
+            <mat-chip
+              *ngFor="let serviceId of selectedServices"
+              color="primary"
+              [removable]="true"
+              (removed)="toggleService(serviceId || '', false)"
+            >
+              {{ getServiceName(serviceId) }}
+
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-set>
+
+          <div>
+            <button
+              mat-button
+              matStepperNext
+              [disabled]="selectedServices.length === 0"
+            >
+              Suivant
+            </button>
+          </div>
+        </mat-step>
+
+        <!-- Étape 2 : Date et heure -->
+        <mat-step [label]="'Date et heure'">
+          <div class="step-content">
+            <div>
+              <h5>Sélectionnez une date et une heure</h5>
+              <mat-card class="calendar-container">
+                <mat-calendar
+                  [dateFilter]="dateFilter"
+                  [selected]="appointmentForm.controls['date'].value"
+                  (selectedChange)="onDateSelected($event)"
+                ></mat-calendar>
+              </mat-card>
+            </div>
+
+            <div>
+              <h5>Choisissez un créneau horaire</h5>
+              <mat-radio-group formControlName="time">
+                <div class="row">
+                  <div *ngFor="let time of timeOptions" class="col-3">
+                    <mat-radio-button [value]="time" class="custom-radio">{{
+                      time
+                    }}</mat-radio-button>
+                  </div>
+                </div>
+              </mat-radio-group>
+            </div>
+          </div>
+
+          <div class="button-container">
+            <button mat-button matStepperPrevious>Précédent</button>
+            <button mat-button matStepperNext>Suivant</button>
+          </div>
+        </mat-step>
+
+        <!-- Étape 3 : Récapitulatif -->
+        <mat-step label="Récapitulatif">
+          <h3>Résumé de votre demande</h3>
+          <p><strong>Services demandés :</strong></p>
+          <ul>
+            <li *ngFor="let serviceId of selectedServices">
+              {{ getServiceName(serviceId) }}
+            </li>
+          </ul>
+          <p>
+            <strong>Date :</strong>
+            {{ appointmentForm.value.date | date }}
+          </p>
+          <p>
+            <strong>Heure :</strong> {{ appointmentForm.value.time }}
+          </p>
+
+          <div class="button-container">
+            <button mat-button matStepperPrevious>Précédent</button>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="submitAppointment()"
+            >
+              Confirmer
+            </button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </form>
+  </mat-card-content>
+</mat-card>

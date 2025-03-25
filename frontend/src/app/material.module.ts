@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 // Material Form Controls
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -42,9 +41,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 
+
+import { MatNativeDateModule } from '@angular/material/core';
+
 @NgModule({
   declarations: [],
   exports: [
+    MatNativeDateModule,
     MatAutocompleteModule,
     MatCheckboxModule,
     MatDatepickerModule,

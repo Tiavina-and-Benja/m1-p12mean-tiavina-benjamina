@@ -1,30 +1,20 @@
 // mechanic-add-dialog.component.ts
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from '@app/models/user.model';
 import { catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { AuthService } from '@app/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MechanicService } from '@app/services/mechanic.service';
+import { MaterialModule } from '@app/material.module';
 
 @Component({
   selector: 'app-mechanic-add-dialog',
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatDialogModule,
-    MatIconModule,
-    MatInputModule,
-    MatButtonModule,
-    MatInputModule,
-    MatButtonModule
+    MaterialModule
   ],
   templateUrl: './mechanic-add-dialog.component.html',
   styleUrl: './mechanic-add-dialog.component.scss'
