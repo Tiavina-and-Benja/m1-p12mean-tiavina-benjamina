@@ -5,6 +5,7 @@ require("module-alias/register");
 
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
+const vehiculeRoutes = require("./routes/vehiculeRoutes"); //
 const serviceRoutes = require("./routes/serviceRoutes");
 const appointmentRoutes = require("./routes/appointmentRoutes");
 const errorMiddleware = require("./middlewares/errorHandlerMiddleware");
@@ -23,6 +24,7 @@ app.use(morgan("dev")); // Logger les requêtes
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/vehicules", vehiculeRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/appointments", appointmentRoutes);
 
