@@ -1,24 +1,25 @@
-<app-client-appointment-table
-[title]="'Rendez-vous validé'"
-[dataSource]="dataSource"
-[displayedColumns]="displayedColumns"
-[totalItems]="totalItems"
-[pageSize]="pageSize"
-[pageSizeOptions]="pageSizeOptions"
-/>
-<app-client-appointment-table
-[title]="'Rendez-vous en attente'"
-[dataSource]="dataSource"
-[displayedColumns]="displayedColumns"
-[totalItems]="totalItems"
-[pageSize]="pageSize"
-[pageSizeOptions]="pageSizeOptions"
-/>
-<app-client-appointment-table
-[title]="'Rendez-vous effectué'"
-[dataSource]="dataSource"
-[displayedColumns]="displayedColumns"
-[totalItems]="totalItems"
-[pageSize]="pageSize"
-[pageSizeOptions]="pageSizeOptions"
-/>
+ v<mat-card>
+  <mat-card-header class="justify-content-between">
+    <mat-card-title>
+      <h2>Mes rendez-vous</h2>
+    </mat-card-title>
+    <button mat-flat-button>Nouveau rendez-vous</button>
+  </mat-card-header>
+</mat-card>
+
+<h4>22 march, 2025</h4>
+<app-service-card />
+<app-service-card />
+
+<h4>22 march, 2025</h4>
+<app-service-card />
+<app-service-card />
+
+<!-- <app-client-appointment-table
+  [title]="'Rendez-vous validé'"
+  [dataSource]="dataSource"
+  [displayedColumns]="displayedColumns"
+  [totalItems]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+/> -->

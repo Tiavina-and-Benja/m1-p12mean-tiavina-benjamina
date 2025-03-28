@@ -6,10 +6,16 @@ import { CommonModule } from '@angular/common';
 import { ClientAppointmentTableComponent } from './client-appointment-table/client-appointment-table.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { Appointment } from '@app/models/appointment.model';
+import { ServiceCardComponent } from '@app/service-card/service-card.component';
 
 @Component({
   selector: 'app-client-appointment',
-  imports: [MaterialModule, CommonModule, ClientAppointmentTableComponent],
+  imports: [
+    MaterialModule,
+    CommonModule,
+    ClientAppointmentTableComponent,
+    ServiceCardComponent,
+  ],
   templateUrl: './client-appointment.component.html',
   styleUrl: './client-appointment.component.scss',
 })

@@ -1,55 +1,113 @@
+<mat-card>
+  <mat-card-header class="justify-content-between">
+    <mat-card-title>
+      <h2>Détail du rendez-vous</h2>
+    </mat-card-title>
+    <mat-chip>in progress</mat-chip>
+  </mat-card-header>
+</mat-card>
+
 <div class="row">
-  <div class="col-lg-5">
-    <mat-card class="cardWithShadow">
+  <div class="col-lg-4">
+    <mat-card>
       <mat-card-header>
-        <mat-card-title>Détail du rendez-vous</mat-card-title>
+        <mat-card-title>
+          <h3>Information du client</h3>
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content class="b-t-1">
-        <ul>
-          <li><strong>Date: </strong>{{ "22 March, 2025" }}</li>
-          <li><strong>Heure: </strong>{{ "10:30" }}</li>
-          <li><strong>Vehicule: </strong>{{ "TOYOTA Corolla 2025" }}</li>
-        </ul>
+        <p>
+          <strong>Nom: </strong>{{ client?.first_name }} {{ client?.last_name }}
+        </p>
+        <p><strong>Email: </strong> {{ client?.email }}</p>
+        <p><strong>Téléphone: </strong> {{ client?.phone }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <h3>Mécaniciens attribués</h3>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="b-t-1">
+        <mat-table [dataSource]="mechanicDataSource">
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Nom
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.first_name}} {{ element.last_name}} </mat-cell>
+          </ng-container>
+        
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef> Email</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="phone">
+            <mat-header-cell *matHeaderCellDef> Téléphone</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.phone}} </mat-cell>
+          </ng-container>
+          
+          <mat-header-row *matHeaderRowDef="mechanicDisplayedColumn"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: mechanicDisplayedColumn;"></mat-row>
+        </mat-table>
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="col-lg-7">
-    <mat-card class="cardWithShadow">
+
+  <div class="col-lg-8">
+    <mat-card>
       <mat-card-header>
-        <mat-card-title>Services</mat-card-title>
+        <mat-card-title>
+          <h3>Services demandés</h3>
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content class="b-t-1">
-        <div class="mat-elevation-z8 table-container">
-          <table mat-table [dataSource]="dataSourceServices">
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Service</th>
-              <td mat-cell *matCellDef="let service">{{ service.name }}</td>
-            </ng-container>
+        <mat-table [dataSource]="serviceDataSource">
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Nom </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
+          </ng-container>
 
-            <ng-container matColumnDef="price">
-              <th mat-header-cell *matHeaderCellDef>Prix</th>
-              <td mat-cell *matCellDef="let service">{{ service.price }}</td>
-            </ng-container>
+          <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef> Prix</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{ element.price }} </mat-cell>
+          </ng-container>
 
-            <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef>Status</th>
-              <td mat-cell *matCellDef="let service">
-                <mat-chip>
-                  {{ service.status }}
-                </mat-chip>
-              </td>
-            </ng-container>
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{ element.status }}
+            </mat-cell>
+          </ng-container>
 
-            <tr
-              mat-header-row
-              *matHeaderRowDef="displayedColumnService; sticky: true"
-            ></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: displayedColumnService"
-            ></tr>
-          </table>
-        </div>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Actions</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Modifier"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                matTooltip="Supprimer"
+              >
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row
+            *matHeaderRowDef="serviceDisplayedColumn"
+          ></mat-header-row>
+          <mat-row
+            *matRowDef="let row; columns: serviceDisplayedColumn"
+          ></mat-row>
+        </mat-table>
       </mat-card-content>
     </mat-card>
   </div>
