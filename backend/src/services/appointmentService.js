@@ -60,15 +60,61 @@ class AppointmentService {
   }
 
   // Mettre à jour un rendez-vous
+  // async updateAppointment(id, data) {
+  //   try {
+  //     return await Appointment.findByIdAndUpdate(id, data, {
+  //       new: true,
+  //     }).populate("clientId vehicleId mechanicIds");
+  //   } catch (error) {
+  //     throw new Error(`Error updating appointment: ${error.message}`);
+  //   }
+  // }
+
+
+
+
+
   async updateAppointment(id, data) {
     try {
-      return await Appointment.findByIdAndUpdate(id, data, {
-        new: true,
-      }).populate("clientId vehicleId mechanicIds");
+      // Récupérer le rendez-vous actuel
+      const appointment = await Appointment.findById(id);
+
+      console.log("--------------->>>", data);
+
+      if (!appointment) {
+        throw new Error("Appointment not found");
+      }
+  
+      // Si l'update inclut des services, on met à jour
+      if (data.services) {
+        appointment.services = data.services;
+      }
+  
+      // Vérifier si tous les services sont terminés
+      const allServicesCompleted = appointment.services.every(
+        (service) => service.status === "completed"
+      );
+  
+      // Mettre à jour le statut du rendez-vous si tous les services sont complétés
+      if (allServicesCompleted) {
+        appointment.status = "completed";
+      }
+  
+      // Appliquer les autres mises à jour fournies
+      Object.assign(appointment, data);
+
+      console.log("---------------", appointment);
+
+  
+      // Sauvegarder et retourner l'appointment mis à jour
+      return await appointment.save();
     } catch (error) {
       throw new Error(`Error updating appointment: ${error.message}`);
     }
   }
+  
+
+  
 
   // Supprimer un rendez-vous
   async deleteAppointment(id) {
@@ -78,6 +124,64 @@ class AppointmentService {
       throw new Error(`Error deleting appointment: ${error.message}`);
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  // Mettre à jour le statut d'un service dans un rendez-vous
+  async updateServiceStatus(appointmentId, serviceIndex, newStatus) {
+    try {
+      // Vérification des valeurs possibles du statut
+      const validStatuses = ["pending", "in progress", "completed"];
+      if (!validStatuses.includes(newStatus)) {
+        throw new Error("Statut de service invalide.");
+      }
+
+      // Récupérer le rendez-vous
+      const appointment = await Appointment.findById(appointmentId);
+      if (!appointment) {
+        throw new Error("Rendez-vous non trouvé.");
+      }
+
+      // Vérifier si l'index du service est valide
+      if (serviceIndex < 0 || serviceIndex >= appointment.services.length) {
+        throw new Error("Index de service invalide.");
+      }
+
+      // Mettre à jour le statut du service
+      appointment.services[serviceIndex].status = newStatus;
+
+      // Vérification du statut général du rendez-vous
+      const allCompleted = appointment.services.every(service => service.status === "completed");
+      const someInProgress = appointment.services.some(service => service.status === "in progress");
+
+      if (allCompleted) {
+        appointment.status = "completed";
+        console.log("✅ Tous les services sont terminés, rendez-vous marqué comme 'completed'");
+      } else if (someInProgress) {
+        appointment.status = "in progress";
+        console.log("🛠️ Certains services sont en cours, rendez-vous marqué comme 'in progress'");
+      } else {
+        appointment.status = "pending";
+        console.log("⏳ Tous les services sont en attente, rendez-vous marqué comme 'pending'");
+      }
+
+      await appointment.save();
+      return appointment;
+    } catch (error) {
+      throw new Error(`Error updating service status: ${error.message}`);
+    }
+  }
+
+
 }
 
 module.exports = new AppointmentService();

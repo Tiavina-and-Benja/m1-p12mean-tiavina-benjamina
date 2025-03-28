@@ -38,12 +38,12 @@ exports.updateVehicule = async (req, res, next) => {
   }
 };
 
-exports.deleteVehicule = async (req, res, next) => {
-  try {
-    const vehicule = await VehiculeService.deleteVehicule(req.params.id);
-    if (!vehicule) return res.status(404).json({ message: "Véhicule non trouvé" });
-    res.status(200).json({ message: "Véhicule supprimé avec succès" });
-  } catch (error) {
-    next(error);
-  }
-};
+// exports.deleteVehicule = async (req, res, next) => {
+//   try {
+//     const vehicule = await VehiculeService.deleteVehicule(req.params.id);
+//     if (!vehicule) return res.status(404).json({ message: "Véhicule non trouvé" });
+//     res.status(200).json({ message: "Véhicule supprimé avec succès" });
+//   } catch (error) {
+//     next(error);
+//   }
+// };

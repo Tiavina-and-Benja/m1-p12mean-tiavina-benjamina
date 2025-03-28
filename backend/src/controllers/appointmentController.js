@@ -79,3 +79,36 @@ exports.cancelAppointment = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
+
+exports.updateServiceStatusInAppointment = async (req, res, next) => {
+  const { appointmentId, serviceId } = req.params;
+  const { status } = req.body; // `status` doit être "pending", "in progress" ou "completed"
+
+  try {
+    const appointment = await appointmentService.getAppointmentById(appointmentId);
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    // Trouver le service à mettre à jour
+    // const serviceIndex = appointment.services.findIndex(s => s._id.toString() === serviceId);
+    // if (serviceIndex === -1) {
+    //   return res.status(404).json({ message: "Service not found in appointment" });
+    // }
+
+    // Mettre à jour le statut du service
+    appointment.services[serviceId].status = status;
+
+    // Sauvegarder l'appointment mis à jour
+    const updatedAppointment = await appointmentService.updateAppointment(appointmentId, {
+      services: appointment.services
+    });
+
+    res.status(200).json(updatedAppointment);
+  } catch (error) {
+    next(error);
+  }
+};

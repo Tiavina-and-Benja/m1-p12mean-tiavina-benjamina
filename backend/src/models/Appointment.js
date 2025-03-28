@@ -8,11 +8,11 @@ const appointmentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    // vehicleId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Vehicle",
-    //   required: true,
-    // },
+    vehicleId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vehicule",
+      required: true,
+    },
     mechanicIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -43,6 +43,11 @@ const appointmentSchema = new mongoose.Schema(
         name: { type: String, required: true },
         price: { type: Number, required: true },
         description: { type: String, default: "" },
+        status: {
+          type: String,
+          enum: ["pending", "in progress", "completed"],
+          default: "pending",
+        },
       },
     ],
     remarks: {

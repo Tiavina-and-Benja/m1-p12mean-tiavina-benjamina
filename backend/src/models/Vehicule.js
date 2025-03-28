@@ -14,6 +14,6 @@ const VehiculeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-VehiculeSchema.plugin(AutoIncrement, { inc_field: "id" });
+// VehiculeSchema.plugin(AutoIncrement, { inc_field: "id" });
 
 module.exports = mongoose.model("Vehicule", VehiculeSchema);
