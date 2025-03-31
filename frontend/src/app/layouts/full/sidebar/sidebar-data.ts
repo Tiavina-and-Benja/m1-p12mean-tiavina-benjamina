@@ -11,9 +11,15 @@ export const navItems: NavItem[] = [
     roles: ['user', 'manager', 'mecanicien']
   },
   {
-    displayName: 'Rendez-vous',
+    displayName: 'Mes rendez-vous',
     iconName: 'solar:atom-line-duotone',
     route: '/client/appointments',
+    roles: ['user']
+  },
+  {
+    displayName: 'Mes véhicules',
+    iconName: 'solar:atom-line-duotone',
+    route: '/vehicles',
     roles: ['user']
   },
   {

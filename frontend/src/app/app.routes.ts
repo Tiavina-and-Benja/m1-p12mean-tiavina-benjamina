@@ -6,6 +6,8 @@ import { RoleGuard } from './guards/role.guard';
 import { NotAuthGuard } from './guards/not-auth.guard';
 import { MechanicCrudComponent } from './pages/mechanic-crud/mechanic-crud.component';
 import { ServiceCrudComponent } from './pages/service-crud/service-crud.component';
+import { VehicleCrudComponent } from './pages/vehicle-crud/vehicle-crud.component';
+import { VehiculeDetailComponent } from './pages/vehicule-crud/vehicule-detail/vehicule-detail.component';
 
 export const routes: Routes = [
   {
@@ -41,6 +43,18 @@ export const routes: Routes = [
         data: { roles: ['manager'] },
       },
       {
+        path: 'vehicles',
+        component: VehicleCrudComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['user'] },
+      },
+      {
+        path: 'vehicles/:id',
+        component: VehiculeDetailComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['user'] },
+      },
+      {
         path: 'client/appointments',
         loadChildren: () =>
           import('./pages/appointments/client/client-appointments.routes').then(
@@ -57,6 +71,11 @@ export const routes: Routes = [
           ).then((m) => m.ManagerAppointmentsRoutes),
         canActivate: [AuthGuard, RoleGuard],
         data: { roles: ['manager'] },
+      },
+      {
+        path: 'extra',
+        loadChildren: () =>
+          import('./pages/extra/extra.routes').then((m) => m.ExtraRoutes),
       },
     ],
   },

@@ -1,28 +1,33 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { Component } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '@app/material.module';
 import { Appointment } from '@app/models/appointment.model';
 import { Service } from '@app/models/service.model';
 import { User } from '@app/models/user.model';
 import { Vehicle } from '@app/models/vehicle.model';
 import { AppointmentService } from '@app/services/appointment.service';
+import { AddMechanicToAppointmentDialogComponent } from './add-mechanic-to-appointment-dialog/add-mechanic-to-appointment-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-client-detail-appointment',
+  selector: 'app-manager-detail-appointment',
   imports: [MaterialModule],
-  templateUrl: './client-detail-appointment.component.html',
-  styleUrl: './client-detail-appointment.component.scss',
+  templateUrl: './manager-detail-appointment.component.html',
+  styleUrl: './manager-detail-appointment.component.scss',
 })
-export class ClientDetailAppointmentComponent implements OnInit {
+export class ManagerDetailAppointmentComponent {
   appointment: Appointment | null = null;
   client: User | null = null;
   vehicle: Vehicle | null = null;
   serviceDataSource: MatTableDataSource<Service>;
   serviceDisplayedColumn: string[] = ['name', 'price', 'status', 'actions'];
   mechanicDataSource: MatTableDataSource<User>;
-  mechanicDisplayedColumn: string[] = ['name', 'email', 'phone'];
+  mechanicDisplayedColumn: string[] = ['name', 'email', 'phone', 'actions'];
 
-  constructor(private appointmentService: AppointmentService) {
+  constructor(
+    private appointmentService: AppointmentService,
+    private dialog: MatDialog
+  ) {
     this.serviceDataSource = new MatTableDataSource<Service>([]);
     this.mechanicDataSource = new MatTableDataSource<User>([]);
   }
@@ -31,9 +36,8 @@ export class ClientDetailAppointmentComponent implements OnInit {
     this.loadAppointment();
   }
 
-  loadAppointment () {
-    this.appointmentService.getAppointmentById('')
-    .subscribe(result => {
+  loadAppointment() {
+    this.appointmentService.getAppointmentById('').subscribe((result) => {
       this.appointment = result;
       this.client = this.extractClient(result);
       this.vehicle = this.extractVehicle(result);
@@ -43,14 +47,14 @@ export class ClientDetailAppointmentComponent implements OnInit {
   }
 
   private extractClient(appointment: Appointment): User | null {
-    if (appointment && typeof appointment.clientId === "object") {
+    if (appointment && typeof appointment.clientId === 'object') {
       return appointment.clientId as User;
     }
     return null;
   }
 
   private extractVehicle(appointment: Appointment): Vehicle | null {
-    if (appointment && typeof appointment.vehicleId === "object") {
+    if (appointment && typeof appointment.vehicleId === 'object') {
       return appointment.vehicleId as Vehicle;
     }
     return null;
@@ -58,9 +62,25 @@ export class ClientDetailAppointmentComponent implements OnInit {
 
   private extractMechanics(appointment: Appointment): User[] {
     if (appointment && Array.isArray(appointment.mechanicIds)) {
-      return appointment.mechanicIds.filter(mechanic => typeof mechanic === "object") as User[];
+      return appointment.mechanicIds.filter(
+        (mechanic) => typeof mechanic === 'object'
+      ) as User[];
     }
     return [];
   }
-  
+
+  openAddMechanicToAppointmentDialog() {
+    const dialogRef = this.dialog.open(
+      AddMechanicToAppointmentDialogComponent,
+      {
+        width: '500px',
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result: User) => {
+      if (result) {
+        console.log('MECHANICS ADDED', result);
+      }
+    });
+  }
 }

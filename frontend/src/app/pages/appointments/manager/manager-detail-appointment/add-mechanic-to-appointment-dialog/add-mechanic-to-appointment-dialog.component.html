@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Rechercher un mécanicien</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Recherche</mat-label>
+    <input matInput [(ngModel)]="searchQuery" />
+  </mat-form-field>
+
+  <mat-list>
+    <mat-list-item
+      *ngFor="let mech of mechanics"
+      (click)="selectMechanic(mech)"
+      [class.selected]="mech === selectedMechanic"
+    >
+      <strong>{{ mech.name }}</strong> - <em>{{ mech.specialty }}</em>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Annuler</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="save()"
+    [disabled]="!selectedMechanic"
+  >
+    Ajouter
+  </button>
+</mat-dialog-actions>

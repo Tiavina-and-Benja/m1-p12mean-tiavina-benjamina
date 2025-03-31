@@ -9,53 +9,55 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from '@app/material.module';
-import { Service } from '@app/models/service.model';
-import { ServiceService } from '@app/services/service.service';
+import { Vehicle } from '@app/models/vehicle.model';
+import { VehicleService } from '@app/services/vehicle.service';
 import { catchError, finalize, of } from 'rxjs';
 
 @Component({
-  selector: 'app-service-form-dialog',
+  selector: 'app-vehicle-form-dialog',
   imports: [MaterialModule, ReactiveFormsModule, CommonModule, FormsModule],
-  templateUrl: './service-form-dialog.component.html',
-  styleUrl: './service-form-dialog.component.scss',
+  templateUrl: './vehicle-form-dialog.component.html',
+  styleUrl: './vehicle-form-dialog.component.scss',
 })
-export class ServiceFormDialogComponent {
-  serviceForm: FormGroup;
-  dialogTitle = 'Ajouter un service';
+export class VehicleFormDialogComponent {
+  vehicleForm: FormGroup;
+  dialogTitle = 'Ajouter un véhicule';
   isEditMode = false;
   isLoading = false;
   errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<ServiceFormDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { service?: Service },
-    private serviceService: ServiceService
+    public dialogRef: MatDialogRef<VehicleFormDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { vehicle?: Vehicle },
+    private vehicleService: VehicleService
   ) {
-    this.isEditMode = !!data?.service;
+    this.isEditMode = !!data?.vehicle;
     this.dialogTitle = this.isEditMode
-      ? 'Modifier le service'
-      : 'Ajouter un service';
-    this.serviceForm = this.fb.group({
-      name: [data?.service?.name || '', [Validators.required]],
-      price: [data?.service?.price || 0, [Validators.required]],
-      description: [data?.service?.description || '', []],
+      ? 'Modifier le véhicule'
+      : 'Ajouter un véhicule';
+    this.vehicleForm = this.fb.group({
+      brand: [data?.vehicle?.brand || '', [Validators.required]],
+      model: [data?.vehicle?.model || '', [Validators.required]],
+      year: [data?.vehicle?.year || '', [Validators.required]],
+      licensePlate: [data?.vehicle?.licensePlate || '', [Validators.required]],
+      fuel: [data?.vehicle?.fuel || '', [Validators.required]],
     });
   }
 
   onSubmit() {
-    if (!this.serviceForm.valid) return;
+    if (!this.vehicleForm.valid) return;
     this.isLoading = true;
     this.errorMessage = '';
 
-    const serviceData: Service = {
-      ...this.serviceForm.value,
+    const vehicleData: Vehicle = {
+      ...this.vehicleForm.value,
     };
 
-    if (this.isEditMode && this.data?.service?.id) {
-      serviceData.id = this.data.service.id;
-      this.serviceService
-        .updateService(serviceData.id, serviceData)
+    if (this.isEditMode && this.data?.vehicle?.id) {
+      vehicleData.id = this.data.vehicle.id;
+      this.vehicleService
+        .updateVehicle(vehicleData.id, vehicleData)
         .pipe(
           catchError((error) => {
             this.errorMessage =
@@ -71,8 +73,8 @@ export class ServiceFormDialogComponent {
           }
         });
     } else {
-      this.serviceService
-        .addService(serviceData)
+      this.vehicleService
+        .addVehicle(vehicleData)
         .pipe(
           catchError((error) => {
             this.errorMessage =
@@ -94,7 +96,7 @@ export class ServiceFormDialogComponent {
   }
 
   getErrorMessage(controlName: string): string {
-    const control = this.serviceForm.get(controlName);
+    const control = this.vehicleForm.get(controlName);
 
     if (control?.hasError('required')) {
       return 'Ce champ est obligatoire';
@@ -103,10 +105,7 @@ export class ServiceFormDialogComponent {
     if (controlName === 'name' && control?.hasError('name')) {
       return 'Nom invalide';
     }
-
-    if (controlName === 'price' && control?.hasError('price')) {
-      return 'Prix invalide';
-    }
+    // TODO: complete error
 
     return '';
   }

@@ -3,13 +3,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppointmentService } from '@app/services/appointment.service';
 import { MaterialModule } from '@app/material.module';
 import { CommonModule } from '@angular/common';
-import { ClientAppointmentTableComponent } from './client-appointment-table/client-appointment-table.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { Appointment } from '@app/models/appointment.model';
+import { RouterLink } from '@angular/router';
+import { ClientCardAppointmentComponent } from "./client-card-appointment/client-card-appointment.component";
 
 @Component({
   selector: 'app-client-appointment',
-  imports: [MaterialModule, CommonModule, ClientAppointmentTableComponent],
+  imports: [
+    MaterialModule,
+    CommonModule,
+    RouterLink,
+    ClientCardAppointmentComponent
+],
   templateUrl: './client-appointment.component.html',
   styleUrl: './client-appointment.component.scss',
 })
