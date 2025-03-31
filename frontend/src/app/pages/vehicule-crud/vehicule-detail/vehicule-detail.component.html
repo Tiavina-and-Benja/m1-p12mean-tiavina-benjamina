@@ -1,0 +1,45 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Détail et réparation effectué du véhicule</mat-card-title>
+  </mat-card-header>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <h4>Information du véhicule</h4>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+    <p><strong>Marque: </strong> Corolla</p>
+    <p><strong>Modèle: </strong> Corolla</p>
+    <p><strong>Année: </strong> 2025</p>
+    <p><strong>Numéro d'immatriculation: </strong> 2222WWT</p>
+    <p><strong>Carburant: </strong> Essence</p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <h4>Listes des réparations effectuées</h4>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="serviceName">
+        <mat-header-cell *matHeaderCellDef> Service
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.serviceName}}</mat-cell>
+      </ng-container>
+    
+      <ng-container matColumnDef="mechanics">
+        <mat-header-cell *matHeaderCellDef> Mécaniciens</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.mechanics.first_name}} {{element.mechanics.last_name}} ({{element.mechanics.phone}}) </mat-cell>
+      </ng-container>
+      
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card-content>
+</mat-card>

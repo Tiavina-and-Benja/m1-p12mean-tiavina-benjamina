@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-content>
+    <div class="card-container row justify-content-start">
+      <div class="vehicle-icon col-auto">
+        <mat-icon class="vehicle-icon"> directions_car </mat-icon>
+      </div>
+      <div class="vehicle-info col">
+        <p><strong>Marque: </strong> TOYOTA</p>
+        <p><strong>Modèle: </strong> Corolla 3</p>
+        <p><strong>Année: </strong> 2024</p>
+        <p><strong>Numéro d'immatriculation: </strong> 2222WWT</p>
+      </div>
+      <div class="actions col-auto justify-content-end">
+        <button mat-icon-button color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button [color]="'warn'">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,25 +1,17 @@
- v<mat-card>
-  <mat-card-header class="justify-content-between">
+ <mat-card>
+  <mat-card-header class="justify-content-between align-items-center">
     <mat-card-title>
-      <h2>Mes rendez-vous</h2>
+      Mes rendez-vous
     </mat-card-title>
-    <button mat-flat-button>Nouveau rendez-vous</button>
+    <button mat-flat-button [routerLink]="'/client/appointments/book'">Nouveau rendez-vous</button>
   </mat-card-header>
 </mat-card>
 
 <h4>22 march, 2025</h4>
-<app-service-card />
-<app-service-card />
+<app-client-card-appointment />
+<app-client-card-appointment />
 
 <h4>22 march, 2025</h4>
-<app-service-card />
-<app-service-card />
+<app-client-card-appointment />
+<app-client-card-appointment />
 
-<!-- <app-client-appointment-table
-  [title]="'Rendez-vous validé'"
-  [dataSource]="dataSource"
-  [displayedColumns]="displayedColumns"
-  [totalItems]="totalItems"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="pageSizeOptions"
-/> -->
