@@ -120,3 +120,16 @@ exports.updateServiceStatusInAppointment = async (req, res, next) => {
     next(error);
   }
 };
+
+
+exports.getEstimate = async (req, res) => {
+  try {
+      const { appointmentId } = req.params;
+
+      const estimate = await appointmentService.getEstimate(appointmentId);
+
+      res.json(estimate);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
