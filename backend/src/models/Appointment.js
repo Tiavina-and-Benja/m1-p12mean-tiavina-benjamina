@@ -8,21 +8,21 @@ const appointmentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    // vehicleId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Vehicle",
-    //   required: true,
-    // },
+    vehicleId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vehicule",
+      required: true,
+    },
     mechanicIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        validate: {
-          validator: function (mechanicIds) {
-            return new Set(mechanicIds.map(String)).size === mechanicIds.length;
-          },
-          message: "Duplicate mechanic IDs are not allowed.",
-        },
+        // validate: {
+        //   validator: function (mechanicIds) {
+        //     return new Set(mechanicIds.map(String)).size === mechanicIds.length;
+        //   },
+        //   message: "Duplicate mechanic IDs are not allowed.",
+        // },
       },
     ],
     date: {
@@ -40,9 +40,15 @@ const appointmentSchema = new mongoose.Schema(
     },
     services: [
       {
+        _id: { type: mongoose.Schema.Types.ObjectId, ref : "Service", required: true, },
         name: { type: String, required: true },
         price: { type: Number, required: true },
         description: { type: String, default: "" },
+        status: {
+          type: String,
+          enum: ["pending", "in progress", "completed"],
+          default: "pending",
+        },
       },
     ],
     remarks: {
