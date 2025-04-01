@@ -95,9 +95,6 @@ exports.cancelAppointment = async (req, res, next) => {
   }
 };
 
-
-
-
 exports.updateServiceStatusInAppointment = async (req, res, next) => {
   const { appointmentId, serviceId } = req.params;
   const { status } = req.body; // `status` doit être "pending", "in progress" ou "completed"
