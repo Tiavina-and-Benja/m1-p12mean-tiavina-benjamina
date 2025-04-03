@@ -28,18 +28,22 @@
   <mat-card-content>
     <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="serviceName">
-        <mat-header-cell *matHeaderCellDef> Service
-        </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.serviceName}}</mat-cell>
+        <mat-header-cell *matHeaderCellDef> Service </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.serviceName }}</mat-cell
+        >
       </ng-container>
-    
+
       <ng-container matColumnDef="mechanics">
         <mat-header-cell *matHeaderCellDef> Mécaniciens</mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.mechanics.first_name}} {{element.mechanics.last_name}} ({{element.mechanics.phone}}) </mat-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.mechanics.first_name }}
+          {{ element.mechanics.last_name }} ({{ element.mechanics.phone }})
+        </mat-cell>
       </ng-container>
-      
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
   </mat-card-content>
 </mat-card>
