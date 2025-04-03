@@ -77,7 +77,7 @@ Le site doit être déployé en ligne. Vous pouvez utiliser des services comme :
 
 ## Auteurs
 - ETU002025 RAMIANDRISOA Tiavina Malalaniaina
-- ETU002023 ...
+- ETU002023 RAMAROSON Andrivola Fanambony Benjamina
 ## Licence
 Ce projet est sous licence MIT.
 
