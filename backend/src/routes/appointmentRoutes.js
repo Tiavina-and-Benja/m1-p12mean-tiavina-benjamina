@@ -17,4 +17,6 @@ router.put("/:appointmentId/cancel", authenticateToken, authorizeProfils(["manag
 router.put("/:appointmentId/add-mechanics", authenticateToken, authorizeProfils(["manager"]),appointmentController.addMechanicsToAppointment);
 router.put("/:appointmentId/services/:serviceId/status", authenticateToken, authorizeProfils(["manager", "user"]), appointmentController.updateServiceStatusInAppointment);
 
+router.get('/estimate/:appointmentId', appointmentController.getEstimate);
+
 module.exports = router;

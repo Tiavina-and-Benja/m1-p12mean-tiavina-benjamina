@@ -287,51 +287,32 @@ class AppointmentService {
       );
     }
   }
+
+  async getEstimate(appointmentId) {
+    try {
+        const appointment = await Appointment.findById(appointmentId).populate('services');
+        if (!appointment) {
+            throw new Error("Rendez-vous non trouvé.");
+        }
+
+        const servicesDetails = appointment.services.map(service => ({
+            name: service.name,
+            price: service.price,
+            description: service.description
+        }));
+
+        const totalPrice = servicesDetails.reduce((sum, service) => sum + service.price, 0);
+
+        return {
+            appointmentId,
+            services: servicesDetails,
+            totalPrice
+        };
+    } catch (error) {
+      throw new Error(`Erreur lors de la génération du devis: ${error.message}`);
+    }
+  }
 }
 
 module.exports = new AppointmentService();
 
-// Mettre à jour le statut d'un service dans un rendez-vous
-// async updateServiceStatus(appointmentId, serviceIndex, newStatus) {
-//   try {
-//     // Vérification des valeurs possibles du statut
-//     const validStatuses = ["pending", "in progress", "completed"];
-//     if (!validStatuses.includes(newStatus)) {
-//       throw new Error("Statut de service invalide.");
-//     }
-
-//     // Récupérer le rendez-vous
-//     const appointment = await Appointment.findById(appointmentId);
-//     if (!appointment) {
-//       throw new Error("Rendez-vous non trouvé.");
-//     }
-
-//     // Vérifier si l'index du service est valide
-//     if (serviceIndex < 0 || serviceIndex >= appointment.services.length) {
-//       throw new Error("Index de service invalide.");
-//     }
-
-//     // Mettre à jour le statut du service
-//     appointment.services[serviceIndex].status = newStatus;
-
-//     // Vérification du statut général du rendez-vous
-//     const allCompleted = appointment.services.every(service => service.status === "completed");
-//     const someInProgress = appointment.services.some(service => service.status === "in progress");
-
-//     if (allCompleted) {
-//       appointment.status = "completed";
-//       console.log("✅ Tous les services sont terminés, rendez-vous marqué comme 'completed'");
-//     } else if (someInProgress) {
-//       appointment.status = "in progress";
-//       console.log("🛠️ Certains services sont en cours, rendez-vous marqué comme 'in progress'");
-//     } else {
-//       appointment.status = "pending";
-//       console.log("⏳ Tous les services sont en attente, rendez-vous marqué comme 'pending'");
-//     }
-
-//     await appointment.save();
-//     return appointment;
-//   } catch (error) {
-//     throw new Error(`Error updating service status: ${error.message}`);
-//   }
-// }
