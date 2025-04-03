@@ -13,6 +13,7 @@ export interface Appointment {
     status: "pending" | "in progress" | "completed" | "canceled";
     services: Service[];
     remarks?: string;
+    isPaid?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
   }

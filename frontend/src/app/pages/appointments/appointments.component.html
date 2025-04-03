@@ -7,9 +7,20 @@
   </mat-card-header>
 </mat-card>
 
-<div *ngFor="let date of appointments | keyvalue">
-  <h4>{{ date.key | date : "dd MMMM, yyyy" }}</h4>
-  <div *ngFor="let appointment of date.value">
-    <app-appointment-card [appointment]="appointment"></app-appointment-card>
+<div *ngIf="appointments && appointments | keyvalue as appointmentList; else noAppointments">
+  <div *ngFor="let date of appointmentList">
+    <h4>{{ date.key | date : "dd MMMM, yyyy" }}</h4>
+    <div *ngFor="let appointment of date.value">
+      <app-appointment-card [appointment]="appointment"></app-appointment-card>
+    </div>
   </div>
 </div>
+
+<!-- Message si aucun rendez-vous -->
+<ng-template #noAppointments>
+  <mat-card>
+    <mat-card-content>
+      Aucun rendez-vous
+    </mat-card-content>
+  </mat-card>
+</ng-template>
