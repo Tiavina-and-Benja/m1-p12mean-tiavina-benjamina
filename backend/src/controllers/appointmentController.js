@@ -159,3 +159,21 @@ exports.markAsPaid = async (req, res, next) => {
     next(error);
   }
 };
+
+
+exports.addPartToService = async (req, res, next) => {
+  const { appointmentId, serviceId } = req.params;
+  const { name, quantity, serialNumber } = req.body;
+
+  try {
+    const updatedAppointment = await appointmentService.addPartToService(
+      appointmentId,
+      serviceId,
+      { name, quantity, serialNumber }
+    );
+
+    res.status(200).json(updatedAppointment);
+  } catch (error) {
+    next(error);
+  }
+};

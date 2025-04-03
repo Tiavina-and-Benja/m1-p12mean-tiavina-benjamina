@@ -178,7 +178,30 @@ class AppointmentService {
     }
   }
 
-
+  async addPartToService(appointmentId, serviceId, part) {
+    try {
+      const appointment = await Appointment.findById(appointmentId);
+      if (!appointment) {
+        throw new Error("Rendez-vous non trouvé.");
+      }
+  
+      const service = appointment.services.find(
+        (s) => s._id.toString() === serviceId
+      );
+      if (!service) {
+        throw new Error("Service non trouvé dans le rendez-vous.");
+      }
+  
+      // Ajouter la pièce à la liste des pièces du service
+      service.parts.push(part);
+  
+      await appointment.save();
+      return appointment;
+    } catch (error) {
+      throw new Error(`Erreur lors de l'ajout de la pièce: ${error.message}`);
+    }
+  }
+  
 }
 
 module.exports = new AppointmentService();

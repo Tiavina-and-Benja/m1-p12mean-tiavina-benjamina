@@ -13,11 +13,13 @@ router.post("", authenticateToken, authorizeProfils(['user']), appointmentContro
 router.get("/:appointmentId", authenticateToken, appointmentController.getAppointmentById);
 router.put("/:appointmentId/validate", authenticateToken, authorizeProfils(['manager']), appointmentController.validateAppointment);
 router.put("/:appointmentId/cancel", authenticateToken, authorizeProfils(['manager']), appointmentController.cancelAppointment);
-router.put("/:appointmentId/services/:serviceId/status", authenticateToken, authorizeProfils(["manager", "user"]), appointmentController.updateServiceStatusInAppointment);
+router.put("/:appointmentId/services/:serviceId/status", authenticateToken, authorizeProfils(["manager", "mecanicien"]), appointmentController.updateServiceStatusInAppointment);
 
 router.get('/estimate/:appointmentId', appointmentController.getEstimate);
 
-router.put("/:appointmentId/pay", authenticateToken, authorizeProfils(["manager", "user"]), paymentMiddleware, appointmentController.markAsPaid );
+router.put("/:appointmentId/pay", authenticateToken, authorizeProfils(["manager", "mecanicien"]), paymentMiddleware, appointmentController.markAsPaid );
+
+router.put("/:appointmentId/services/:serviceId/add-part", authenticateToken, authorizeProfils(["mecanicien", "user"]), appointmentController.addPartToService);
   
 
 module.exports = router;
