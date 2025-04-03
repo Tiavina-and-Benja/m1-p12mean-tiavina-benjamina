@@ -66,6 +66,25 @@ const appointmentSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+
+    messages: [
+      {
+        senderId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User", // Référence à l'utilisateur (client ou mécanicien)
+          required: true,
+        },
+        text: {
+          type: String,
+          required: true,
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    
   },
   { timestamps: true }
 );

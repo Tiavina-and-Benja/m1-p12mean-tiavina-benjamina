@@ -319,6 +319,7 @@ class AppointmentService {
       const appointment = await Appointment.findById(appointmentId);
       if (!appointment) {
         throw new Error("Rendez-vous non trouvé.");
+
       }
   
       const service = appointment.services.find(
@@ -337,8 +338,29 @@ class AppointmentService {
       throw new Error(`Erreur lors de l'ajout de la pièce: ${error.message}`);
     }
   }
-  
 
+  async addMessageToAppointment(appointmentId, senderId, text) {
+    try {
+      // console.log("appointmentId reçu:", appointmentId);
+      // Trouver le rendez-vous par ID
+      const appointment = await Appointment.findById(appointmentId);
+      if (!appointment) {
+        throw new Error("Appointment not found");
+      }
+
+      // Ajouter un message au tableau des messages
+      appointment.messages.push({
+        senderId,
+        text,
+      });
+
+      // Sauvegarder l'appointment mis à jour
+      await appointment.save();
+      return appointment;
+    } catch (error) {
+      throw new Error(`Error adding message: ${error.message}`);
+    }
+  }
 }
 
 module.exports = new AppointmentService();

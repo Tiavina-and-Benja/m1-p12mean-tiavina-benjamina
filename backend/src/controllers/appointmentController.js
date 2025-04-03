@@ -221,3 +221,24 @@ exports.addPartToService = async (req, res, next) => {
     next(error);
   }
 };
+
+
+exports.addMessage = async (req, res, next) => {
+  // const { appointmentId, text } = req.body;
+  const { text } = req.body;
+    const { appointmentId } = req.params; // Récupérer l'ID depuis l'URL
+    // console.log("appointmentId reçu dans le controller:", appointmentId);
+  const token = req.header("Authorization")?.split(" ")[1];
+  const senderId = (await authService.getUser(token)).id;
+
+  try {
+    const updatedAppointment = await appointmentService.addMessageToAppointment(
+      appointmentId,
+      senderId,
+      text
+    );
+    res.status(201).json(updatedAppointment);
+  } catch (error) {
+    next(error);
+  }
+};

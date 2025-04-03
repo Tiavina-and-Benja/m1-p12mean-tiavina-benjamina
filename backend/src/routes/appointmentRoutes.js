@@ -15,9 +15,9 @@ router.get("", authenticateToken, authorizeProfils(['manager']), appointmentCont
 router.post("", authenticateToken, authorizeProfils(['user']), appointmentController.createAppointment);
 router.get("/:appointmentId", authenticateToken, appointmentController.getAppointmentById);
 
-router.put("/:appointmentId/validate", authenticateToken, authorizeProfils(['manager']), appointmentController.validateAppointment);
-router.put("/:appointmentId/cancel", authenticateToken, authorizeProfils(['manager']), appointmentController.cancelAppointment);
-router.put("/:appointmentId/services/:serviceId/status", authenticateToken, authorizeProfils(["manager", "mecanicien"]), appointmentController.updateServiceStatusInAppointment);
+// router.put("/:appointmentId/validate", authenticateToken, authorizeProfils(['manager']), appointmentController.validateAppointment);
+// router.put("/:appointmentId/cancel", authenticateToken, authorizeProfils(['manager']), appointmentController.cancelAppointment);
+// router.put("/:appointmentId/services/:serviceId/status", authenticateToken, authorizeProfils(["manager", "mecanicien"]), appointmentController.updateServiceStatusInAppointment);
 
 router.put("/:appointmentId/validate", authenticateToken, authorizeProfils(["manager", "user"]),appointmentController.validateAppointment);
 router.put("/:appointmentId/cancel", authenticateToken, authorizeProfils(["manager", "user"]),appointmentController.cancelAppointment);
@@ -31,5 +31,6 @@ router.put("/:appointmentId/pay", authenticateToken, authorizeProfils(["manager"
 
 router.put("/:appointmentId/services/:serviceId/add-part", authenticateToken, authorizeProfils(["mecanicien", "user"]), appointmentController.addPartToService);
   
+router.post("/:appointmentId/messages", appointmentController.addMessage);
 
 module.exports = router;
