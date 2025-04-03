@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Service = require("./Service");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const appointmentSchema = new mongoose.Schema(
   {
@@ -58,5 +58,24 @@ const appointmentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+appointmentSchema.set("toObject", {
+  virtuals: true,
+  versionKey: false,
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
+
+appointmentSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
+
+appointmentSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Appointment", appointmentSchema);

@@ -15,7 +15,7 @@ import { catchError, finalize, of } from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-form-dialog',
-  imports: [MaterialModule, ReactiveFormsModule, CommonModule, FormsModule],
+  imports: [MaterialModule, FormsModule, ReactiveFormsModule, CommonModule],
   templateUrl: './vehicle-form-dialog.component.html',
   styleUrl: './vehicle-form-dialog.component.scss',
 })
@@ -37,11 +37,11 @@ export class VehicleFormDialogComponent {
       ? 'Modifier le véhicule'
       : 'Ajouter un véhicule';
     this.vehicleForm = this.fb.group({
-      brand: [data?.vehicle?.brand || '', [Validators.required]],
-      model: [data?.vehicle?.model || '', [Validators.required]],
-      year: [data?.vehicle?.year || '', [Validators.required]],
-      licensePlate: [data?.vehicle?.licensePlate || '', [Validators.required]],
-      fuel: [data?.vehicle?.fuel || '', [Validators.required]],
+      marque: [data?.vehicle?.marque || '', [Validators.required]],
+      modele: [data?.vehicle?.modele || '', [Validators.required]],
+      annee: [data?.vehicle?.annee || '', [Validators.required]],
+      immatriculation: [data?.vehicle?.immatriculation || '', [Validators.required]],
+      type_carburant: [data?.vehicle?.type_carburant || '', [Validators.required]],
     });
   }
 
@@ -53,7 +53,8 @@ export class VehicleFormDialogComponent {
     const vehicleData: Vehicle = {
       ...this.vehicleForm.value,
     };
-
+    console.log('EDIT_MODE', this.isEditMode);
+    console.log('DATA', this.data);
     if (this.isEditMode && this.data?.vehicle?.id) {
       vehicleData.id = this.data.vehicle.id;
       this.vehicleService

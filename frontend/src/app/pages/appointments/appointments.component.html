@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-header class="justify-content-between align-items-center">
+    <mat-card-title>Mes rendez-vous</mat-card-title>
+    <button mat-flat-button [routerLink]="'/book-appointment'" *ngIf="role === 'user'">
+      Nouveau rendez-vous
+    </button>
+  </mat-card-header>
+</mat-card>
+
+<div *ngFor="let date of appointments | keyvalue">
+  <h4>{{ date.key | date : "dd MMMM, yyyy" }}</h4>
+  <div *ngFor="let appointment of date.value">
+    <app-appointment-card [appointment]="appointment"></app-appointment-card>
+  </div>
+</div>

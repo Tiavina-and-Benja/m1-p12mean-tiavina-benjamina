@@ -5,13 +5,17 @@
         <mat-icon class="vehicle-icon"> directions_car </mat-icon>
       </div>
       <div class="vehicle-info col">
-        <p><strong>Marque: </strong> TOYOTA</p>
-        <p><strong>Modèle: </strong> Corolla 3</p>
-        <p><strong>Année: </strong> 2024</p>
-        <p><strong>Numéro d'immatriculation: </strong> 2222WWT</p>
+        <p><strong>Marque: </strong> {{ vehicle.marque }}</p>
+        <p><strong>Modèle: </strong> {{ vehicle.modele }}</p>
+        <p><strong>Année: </strong> {{ vehicle.annee }}</p>
+        <p>
+          <strong>Numéro d'immatriculation: </strong>
+          {{ vehicle.immatriculation }}
+        </p>
+        <p><strong>Carburant: </strong> {{ vehicle.type_carburant }}</p>
       </div>
       <div class="actions col-auto justify-content-end">
-        <button mat-icon-button color="primary">
+        <button mat-icon-button (click)="update.emit(vehicle)">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button [color]="'warn'">
