@@ -8,10 +8,11 @@ import { VehicleService } from '@app/services/vehicle.service';
 import { VehicleFormDialogComponent } from './vehicle-form-dialog/vehicle-form-dialog.component';
 import { VehicleDeleteDialogComponent } from './vehicle-delete-dialog/vehicle-delete-dialog.component';
 import { PageEvent } from '@angular/material/paginator';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-vehicle-crud',
-  imports: [MaterialModule, VehicleCardComponent],
+  imports: [MaterialModule, VehicleCardComponent, CommonModule],
   templateUrl: './vehicle-crud.component.html',
   styleUrl: './vehicle-crud.component.scss',
 })

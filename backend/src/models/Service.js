@@ -33,5 +33,7 @@ serviceSchema.set("toObject", {
     delete ret._id;
   },
 });
+
+serviceSchema.index({ name: "text", description: "text" });
 serviceSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model("Service", serviceSchema);

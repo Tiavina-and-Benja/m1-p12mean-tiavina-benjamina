@@ -8,6 +8,9 @@ import { MechanicCrudComponent } from './pages/mechanic-crud/mechanic-crud.compo
 import { ServiceCrudComponent } from './pages/service-crud/service-crud.component';
 import { VehicleCrudComponent } from './pages/vehicle-crud/vehicle-crud.component';
 import { VehiculeDetailComponent } from './pages/vehicule-crud/vehicule-detail/vehicule-detail.component';
+import { AppointmentsComponent } from './pages/appointments/appointments.component';
+import { AppointmentDetailComponent } from './pages/appointment-detail/appointment-detail.component';
+import { ClientBookingAppointmentComponent } from './pages/appointments/client/client-booking-appointment/client-booking-appointment.component';
 
 export const routes: Routes = [
   {
@@ -55,6 +58,30 @@ export const routes: Routes = [
         data: { roles: ['user'] },
       },
       {
+        path: 'appointments',
+        component: AppointmentsComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['user', 'manager', 'mecanicien']}
+      },
+      {
+        path: 'appointments/:id',
+        component: AppointmentDetailComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['user', 'manager', 'mecanicien']}
+      },
+      {
+        path: 'book-appointment',
+        component: ClientBookingAppointmentComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['user']}
+      },
+      {
+        path: 'appointments/:id',
+        component: AppointmentDetailComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['user']}
+      },
+      {
         path: 'client/appointments',
         loadChildren: () =>
           import('./pages/appointments/client/client-appointments.routes').then(
@@ -62,15 +89,6 @@ export const routes: Routes = [
           ),
         canActivate: [AuthGuard, RoleGuard],
         data: { roles: ['user'] },
-      },
-      {
-        path: 'manager/appointments',
-        loadChildren: () =>
-          import(
-            './pages/appointments/manager/manager-appointments.routes'
-          ).then((m) => m.ManagerAppointmentsRoutes),
-        canActivate: [AuthGuard, RoleGuard],
-        data: { roles: ['manager'] },
       },
       {
         path: 'extra',

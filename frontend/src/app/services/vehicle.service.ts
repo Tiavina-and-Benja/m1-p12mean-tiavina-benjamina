@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class VehicleService {
-  private apiUrl = `${environment.apiUrl}/vehicles`;
+  private apiUrl = `${environment.apiUrl}/vehicules`;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
   getPaginated(
@@ -68,4 +68,5 @@ export class VehicleService {
     });
     return this.http.delete(`${this.apiUrl}/${vehicleId}`, { headers });
   }
+
 }

@@ -8,16 +8,9 @@
         <!-- Étape 1 : Choix des services -->
         <mat-step [label]="'Services'">
           <h5>Définissez les services à effectuer</h5>
-
-          <!-- Liste des services avec checkbox -->
-          <div *ngFor="let service of services">
-            <mat-checkbox
-              [checked]="selectedServices.includes(service.id || '')"
-              (change)="toggleService(service.id || '', $event.checked)"
-            >
-              {{ service.name }}
-            </mat-checkbox>
-          </div>
+          <button mat-flat-button (click)="openAddServiceDialog()">
+            Ajouter un service
+          </button>
 
           <!-- Affichage des services sélectionnés -->
           <h6>Services sélectionnés :</h6>
@@ -46,7 +39,47 @@
         </mat-step>
 
         <mat-step [label]="'Véhicule'">
-          
+          <div class="row">
+            <mat-card
+              class="cardWithShadow car-card add-car-card"
+              (click)="openAddVehicleDialog()"
+            >
+              <mat-card-header class="justify-content-center">
+                <mat-icon class="add-car-icon">add</mat-icon>
+              </mat-card-header>
+              <mat-card-content class="text-center">
+                <p><strong>Ajouter un véhicule</strong></p>
+              </mat-card-content>
+            </mat-card>
+            <div *ngFor="let vehicle of vehicles">
+              <mat-card
+                class="cardWithShadow car-card"
+                [ngClass]="{
+                  'selected-car-card':
+                    vehicle.id === appointmentForm.get('vehicleId')?.value
+                }"
+                (click)="selectVehicle(vehicle.id || '')"
+              >
+                <mat-card-header class="justify-content-center">
+                  <mat-icon class="car-icon">directions_car</mat-icon>
+                </mat-card-header>
+                <mat-card-content>
+                  <p><strong>N°: </strong>{{ vehicle.immatriculation }}</p>
+                  <p><strong>Marque: </strong>{{ vehicle.marque }}</p>
+                  <p><strong>Modèle: </strong>{{ vehicle.modele }}</p>
+                  <p><strong>Année: </strong>{{ vehicle.annee }}</p>
+                  <p>
+                    <strong>Carburant: </strong>{{ vehicle.type_carburant }}
+                  </p>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+
+          <div class="button-container">
+            <button mat-button matStepperPrevious>Précédent</button>
+            <button mat-button matStepperNext>Suivant</button>
+          </div>
         </mat-step>
 
         <!-- Étape 2 : Date et heure -->
@@ -96,9 +129,7 @@
             <strong>Date :</strong>
             {{ appointmentForm.value.date | date }}
           </p>
-          <p>
-            <strong>Heure :</strong> {{ appointmentForm.value.time }}
-          </p>
+          <p><strong>Heure :</strong> {{ appointmentForm.value.time }}</p>
 
           <div class="button-container">
             <button mat-button matStepperPrevious>Précédent</button>

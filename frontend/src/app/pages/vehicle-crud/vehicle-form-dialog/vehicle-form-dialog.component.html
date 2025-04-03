@@ -1,62 +1,62 @@
-<!-- user-add-dialog.component.html -->
 <h2 mat-dialog-title>{{ dialogTitle }}</h2>
 <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
   <mat-dialog-content>
+
+    <!-- Marque -->
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Marque</mat-label>
-      <input matInput formControlName="name" placeholder="Nom" />
-      <mat-error *ngIf="vehicleForm.get('name')?.invalid">
-        {{ getErrorMessage("name") }}
+      <input matInput formControlName="marque" placeholder="Ex: Toyota" />
+      <mat-error *ngIf="vehicleForm.get('marque')?.invalid">
+        {{ getErrorMessage("marque") }}
       </mat-error>
     </mat-form-field>
 
-    
+    <!-- Modèle -->
     <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Modèle</mat-label>
-        <input matInput formControlName="name" placeholder="Nom" />
-        <mat-error *ngIf="vehicleForm.get('name')?.invalid">
-          {{ getErrorMessage("name") }}
-        </mat-error>
-      </mat-form-field>
-  
-    
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Année</mat-label>
-        <input matInput formControlName="name" placeholder="Nom" />
-        <mat-error *ngIf="vehicleForm.get('name')?.invalid">
-          {{ getErrorMessage("name") }}
-        </mat-error>
-      </mat-form-field>
-  
-    
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Numéro d'immatriculation</mat-label>
-        <input matInput formControlName="name" placeholder="Nom" />
-        <mat-error *ngIf="vehicleForm.get('name')?.invalid">
-          {{ getErrorMessage("name") }}
-        </mat-error>
-      </mat-form-field>
-  
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Prénom</mat-label>
-        <input matInput formControlName="name" placeholder="Nom" />
-        <mat-error *ngIf="vehicleForm.get('name')?.invalid">
-          {{ getErrorMessage("name") }}
-        </mat-error>
-      </mat-form-field>
-  
-      
-          
+      <mat-label>Modèle</mat-label>
+      <input matInput formControlName="modele" placeholder="Ex: Corolla" />
+      <mat-error *ngIf="vehicleForm.get('modele')?.invalid">
+        {{ getErrorMessage("modele") }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Année -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Année</mat-label>
+      <input matInput type="number" formControlName="annee" placeholder="Ex: 2024" />
+      <mat-error *ngIf="vehicleForm.get('annee')?.invalid">
+        {{ getErrorMessage("annee") }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Numéro d'immatriculation -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Numéro d'immatriculation</mat-label>
+      <input matInput formControlName="immatriculation" placeholder="Ex: 2222WWT" />
+      <mat-error *ngIf="vehicleForm.get('immatriculation')?.invalid">
+        {{ getErrorMessage("immatriculation") }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Carburant -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Carburant</mat-label>
+      <mat-select formControlName="type_carburant">
+        <mat-option value="diesel">Diesel</mat-option>
+        <mat-option value="essence">Essence</mat-option>
+        <mat-option value="électrique">Électrique</mat-option>
+        <mat-option value="hybride">Hybride</mat-option>
+      </mat-select>
+      <mat-error *ngIf="vehicleForm.get('type_carburant')?.invalid">
+        {{ getErrorMessage("type_carburant") }}
+      </mat-error>
+    </mat-form-field>
+
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
     <button mat-button (click)="onCancel()" type="button">Annuler</button>
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="vehicleForm.invalid"
-    >
+    <button mat-raised-button color="primary" type="submit" [disabled]="vehicleForm.invalid">
       {{ isEditMode ? "Mettre à jour" : "Ajouter" }}
     </button>
   </mat-dialog-actions>

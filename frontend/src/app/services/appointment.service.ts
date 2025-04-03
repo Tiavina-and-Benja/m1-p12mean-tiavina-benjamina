@@ -1,11 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Appointment } from '@app/models/appointment.model';
 import { environment } from '@environments/environment';
 import { Observable, of } from 'rxjs';
 import { AuthService } from './auth.service';
-import { Vehicle } from '@app/models/vehicle.model';
-import { User } from '@app/models/user.model';
+import { PaginatedResult } from '@app/models/util.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,111 +24,116 @@ export class AppointmentService {
   }
 
   getAppointmentById(appointmentId: string): Observable<Appointment> {
-    const fakeAppointment = {
-      id: '65a4f9c2b7e5f20015a1b3c7',
-      clientId: {
-        id: '603d2f1a9a1c4b0015a4f9c2',
-        first_name: 'Tiavina',
-        last_name: 'Ramiandrisoa',
-        email: 'tiavinaramia@gmail.com',
-        phone: '032 66 131 80',
-      } as User,
-      vehicleId: {
-        id: 'VHC123456',
-        brand: 'Toyota',
-        model: 'Corolla 2025',
-        licensePlate: 'ABC-1234',
-        year: 2025,
-      } as Vehicle,
-      mechanicIds: [
-        {
-          id: '603d2f1a9a1c4b0015a4f9c5',
-          first_name: 'Tiavina',
-          last_name: 'Ramiandrisoa',
-          email: 'tiavinaramia@gmail.com',
-          phone: '032 66 131 80',
-        } as User,
-        {
-          id: '603d2f1a9a1c4b0015a4f9c6',
-          first_name: 'Tiavina',
-          last_name: 'Ramiandrisoa',
-          email: 'tiavinaramia@gmail.com',
-          phone: '032 66 131 80',
-        } as User,
-      ],
-      appointmentDate: new Date('2025-03-30T11:00:00.000Z'),
-      status: 'in progress',
-      services: [
-        {
-          id: 'SRV001',
-          name: 'Vidange moteur',
-          price: 50,
-          description: "Changement d'huile et du filtre à huile",
-          status: 'in progress',
-        },
-        {
-          id: 'SRV002',
-          name: 'Changement de plaquettes de frein',
-          price: 100,
-          description: 'Remplacement des plaquettes avant et arrière',
-          status: 'pending',
-        },
-      ],
-      remarks: 'Client souhaite un contrôle général du véhicule.',
-    } as Appointment;
-    return of(fakeAppointment);
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.get<Appointment>(`${this.apiUrl}/${appointmentId}`, {
+      headers,
+    });
   }
 
-  // Simuler des données factices pour les rendez-vous
-  getClientAppointments(clientId: string): Observable<any[]> {
-    // Remplacer ces données par une réponse du backend quand il sera prêt
-    const fakeAppointments = [
-      {
-        _id: '1',
-        appointment_date: new Date('2025-03-25T14:00:00'),
-        vehicle: {
-          _id: '1',
-          brand: 'TOYOTA',
-          model: 'Corolla',
-          licensePlate: 'ATS',
-          year: 2020,
-        },
-        status: 'pending',
-      },
+  getClientAppointments(
+    page: number = 1,
+    limit: number = 10,
+    sortField: string = '',
+    sortOrder: string = '',
+    searchTerm: string = ''
+  ): Observable<PaginatedResult<Appointment>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString())
+      .set('sortField', sortField)
+      .set('sortOrder', sortOrder);
 
-      {
-        _id: '1',
-        appointment_date: new Date('2025-03-25T14:00:00'),
-        vehicle: {
-          _id: '1',
-          brand: 'TOYOTA',
-          model: 'Corolla',
-          licensePlate: 'ATS',
-          year: 2020,
-        },
-        status: 'pending',
-      },
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
 
-      {
-        _id: '1',
-        appointment_date: new Date('2025-03-25T14:00:00'),
-        vehicle: {
-          _id: '1',
-          brand: 'TOYOTA',
-          model: 'Corolla',
-          licensePlate: 'ATS',
-          year: 2020,
-        },
-        status: 'pending',
-      },
-    ];
+    return this.http.get<PaginatedResult<Appointment>>(`${this.apiUrl}`, {
+      headers,
+      params,
+    });
+  }
 
-    return of(fakeAppointments); // Retourne les données factices comme Observable
+  getMechanicsAppointments(
+    page: number = 1,
+    limit: number = 10,
+    sortField: string = '',
+    sortOrder: string = '',
+    searchTerm: string = ''
+  ): Observable<PaginatedResult<Appointment>> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString())
+      .set('sortField', sortField)
+      .set('sortOrder', sortOrder);
+
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
+
+    return this.http.get<PaginatedResult<Appointment>>(`${this.apiUrl}/mecaniciens`, {
+      headers,
+      params,
+    });
+  }
+
+  getAllAppointments(): Observable<Appointment[]> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.get<Appointment[]>(`${this.apiUrl}/all`, {
+      headers,
+    });
+  }
+
+  validateAppointment(appointmentId: string): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.put<any>(`${this.apiUrl}/${appointmentId}/validate`, {}, {
+      headers,
+    });
   }
 
   cancelAppointment(appointmentId: string): Observable<any> {
-    // Logique pour annuler le rendez-vous (simulé ici)
-    console.log(`Cancel appointment with ID: ${appointmentId}`);
-    return of({ message: 'Appointment cancelled successfully' }); // Simuler la réponse
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.put<any>(`${this.apiUrl}/${appointmentId}/cancel`, {}, {
+      headers,
+    });
+  }
+
+  addMechanicsToAppointment(appointmentId: string, mechanicIds: string[]): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<any>(`${this.apiUrl}/${appointmentId}/add-mechanics`, {appointmentId, mechanicIds}, {
+      headers,
+    });
   }
 }
