@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Choisir les services</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Recherche</mat-label>
+    <input
+      matInput
+      [(ngModel)]="searchText"
+      (ngModelChange)="onSearchChange()"
+    />
+  </mat-form-field>
+
+  <div *ngFor="let service of services">
+    <mat-checkbox
+      (change)="onToggleService(service)"
+      [checked]="isSelected(service)"
+      >
+      {{ service.name }}
+    </mat-checkbox>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onConfirm()"
+    [disabled]="isValid()"
+  >
+    Ajouter
+  </button>
+</mat-dialog-actions>

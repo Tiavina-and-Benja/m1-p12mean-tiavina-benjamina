@@ -1,0 +1,103 @@
+.step-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.calendar-container {
+  width: 300px;
+}
+
+.time-container {
+  flex: 1;
+}
+
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.radio-button {
+  margin-bottom: 20px;
+  border: solid 1px gray;
+  border-radius: 5px;
+}
+.custom-radio-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  background-color: #f0f0f0; /* Fond gris clair */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.custom-radio-btn.mat-radio-checked {
+  background-color: #007bff; /* Couleur de fond lorsque sélectionné */
+  color: white;
+  border-color: #007bff;
+}
+
+.custom-radio-btn:hover {
+  background-color: #e0e0e0; /* Fond légèrement plus foncé au survol */
+  transform: scale(1.05); /* Légère augmentation de taille au survol */
+}
+
+.custom-radio-btn.mat-radio-checked:hover {
+  background-color: #0056b3;
+}
+
+.custom-radio-btn.mat-radio-button-disabled {
+  background-color: #d3d3d3; /* Fond gris pour les boutons désactivés */
+  border-color: #b0b0b0;
+  cursor: not-allowed;
+}
+
+.car-icon {
+  font-size: 50px;
+  width: 50px;
+  height: 50px;
+}
+
+.car-card {
+  min-width: 250px;
+  margin: 10px 10px;
+}
+
+.add-car-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #f5f5f5;
+  border: 2px dashed #ccc;
+}
+
+.add-car-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #1976d2;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.selected-car-card {
+  border: 3px solid #1976d2; /* Bleu Material */
+  background: #e3f2fd; /* Bleu clair */
+}
+
+.car-card {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.car-card:hover {
+  transform: scale(1.05);
+}

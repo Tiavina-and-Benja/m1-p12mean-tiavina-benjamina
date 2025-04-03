@@ -29,8 +29,8 @@ export class MechanicService {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString())
-      .set('sort[field]', sortField)
-      .set('sort[order]', sortOrder);
+      .set('sortField', sortField)
+      .set('sortOrder', sortOrder);
     if (searchTerm) {
       params = params.set('search', searchTerm);
     }

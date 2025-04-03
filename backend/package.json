@@ -7,7 +7,8 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "seedManager": "node src/seeds/seedManager.js",
-    "seedUser": "node src/seeds/seedUser.js"
+    "seedUser": "node src/seeds/seedUser.js",
+    "seedService": "node src/seeds/seedService.js"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +29,7 @@
     "module-alias": "^2.2.3",
     "mongoose": "^8.12.1",
     "mongoose-paginate-v2": "^1.9.0",
+    "mongoose-sequence": "^6.0.1",
     "morgan": "^1.10.0"
   },
   "_moduleAliases": {

@@ -1,0 +1,31 @@
+<mat-card class="appointment-card" [routerLink]="[appointment.id]">
+    <mat-card-content>
+      <div class="card-container row">
+        <!-- Icône au début -->
+        <div class="appointment-icon col-1">
+          <mat-icon class="user-icon">person</mat-icon>
+        </div>
+        <!-- Données utilisateur -->
+        <div class="user-info col-4">
+          <h4>{{ getFullName() }}</h4>
+          <p>{{ getClient().email }}</p>
+          <p>{{ getClient().phone }}</p>
+        </div>
+  
+        <div class="appointment-info col-4">
+          <h4>{{ getVehiculeFullName() }}</h4>
+          <p>Date: {{ appointment.date | date }}</p>
+          <p>Heure: {{ appointment.time }} </p>
+        </div>
+  
+        <!-- Statut à la fin -->
+        <div class="status col-2">
+          <mat-chip>{{ appointment.status }}</mat-chip>
+          <!-- <button mat-icon-button color="primary" matTooltip="Accepter" *ngIf="role === 'manager'"> <mat-icon>done</mat-icon> </button>
+          <button mat-icon-button color="warn" matTooltip="Refuser" *ngIf="role === 'manager'"> <mat-icon>cancel</mat-icon> </button>
+          <button mat-icon-button color="warn" matTooltip="Annuler" *ngIf="role === 'user'"> <mat-icon>cancel</mat-icon> </button> -->
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
