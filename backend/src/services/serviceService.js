@@ -26,12 +26,20 @@ class ServiceService {
           : { createdAt: -1 };
 
       if (search) {
+        const searchTerms = search
+          .split(" ")
+          .filter((term) => term.trim() !== "");
+
         criteria = {
           ...criteria,
-          $text: { $search: search },
+          $and: searchTerms.map((term) => ({
+            $or: [
+              { name: { $regex: term, $options: "i" } },
+              { description: { $regex: term, $options: "i" } },
+            ],
+          })),
         };
       }
-
       const services = await Service.paginate(criteria, {
         page,
         limit,

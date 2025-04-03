@@ -8,11 +8,16 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from '@app/material.module';
 import { Appointment } from '@app/models/appointment.model';
 import { Service } from '@app/models/service.model';
 import { AppointmentService } from '@app/services/appointment.service';
 import { ServiceService } from '@app/services/service.service';
+import { AddServiceToBookingAppointmentDialogComponent } from './add-service-to-booking-appointment-dialog/add-service-to-booking-appointment-dialog.component';
+import { VehicleFormDialogComponent } from '@app/pages/vehicle-crud/vehicle-form-dialog/vehicle-form-dialog.component';
+import { Vehicle } from '@app/models/vehicle.model';
+import { VehicleService } from '@app/services/vehicle.service';
 
 @Component({
   selector: 'app-client-booking-appointment',
@@ -24,6 +29,7 @@ import { ServiceService } from '@app/services/service.service';
 export class ClientBookingAppointmentComponent implements OnInit {
   appointmentForm: FormGroup;
   services: Service[] = [];
+  vehicles: Vehicle[] = [];
   selectedServices: string[] = [];
   timeOptions: string[] = [
     '08:00',
@@ -46,33 +52,37 @@ export class ClientBookingAppointmentComponent implements OnInit {
   ];
 
   dateFilter = (d: Date | null): boolean => {
-    return d !== null && d >= new Date(); // Désactive les dates passées
+    return d !== null && d >= new Date();
   };
 
   constructor(
     private fb: FormBuilder,
-    private serviceService: ServiceService,
-    private appointmentService: AppointmentService
+    private vehicleService: VehicleService,
+    private appointmentService: AppointmentService,
+    private dialog: MatDialog
   ) {
     this.appointmentForm = this.fb.group({
       date: new FormControl(new Date()),
       time: new FormControl(''),
       services: this.fb.array([]),
+      vehicleId: new FormControl(''),
     });
   }
 
   ngOnInit(): void {
-    this.loadServices();
+    this.loadVehicles();
   }
 
   get serviceSelection(): FormArray {
     return this.appointmentForm.get('services') as FormArray;
   }
 
-  loadServices(): void {
-    this.serviceService.getPaginated(1, 100).subscribe((data) => {
-      this.services = data.docs;
-    });
+
+  loadVehicles(): void {
+    this.vehicleService.getPaginated(1, 100)
+    .subscribe(result => {
+      this.vehicles = result.docs;
+    })
   }
 
   toggleService(serviceId: string, isChecked: boolean) {
@@ -91,12 +101,15 @@ export class ClientBookingAppointmentComponent implements OnInit {
     this.selectedServices = this.serviceSelection.value;
   }
 
-  
+  selectVehicle(vehicleId: string) {
+    this.appointmentForm.controls['vehicleId'].setValue(vehicleId);
+  }
+
   getServiceName(serviceId: string): string {
     const service = this.services.find((s) => s.id === serviceId);
     return service ? service.name : 'Service inconnu';
   }
-  
+
   onDateSelected(event: Date | null) {
     if (event) {
       this.appointmentForm.controls['date'].setValue(event);
@@ -108,9 +121,46 @@ export class ClientBookingAppointmentComponent implements OnInit {
       return;
     }
 
-    this.appointmentService.addApointment(this.appointmentForm.value as Appointment)
-    .subscribe(response => {
-      console.log('Rendez-vous soumis:', this.appointmentForm.value);
+    const appointmentData = {
+      ...this.appointmentForm.value,
+      services: this.selectedServices || []
+    };
+
+    this.appointmentService
+      .addApointment(appointmentData)
+      .subscribe((response) => {
+        console.log('Rendez-vous soumis:', this.appointmentForm.value);
+      });
+  }
+
+  openAddServiceDialog(): void {
+    const dialogRef = this.dialog.open(AddServiceToBookingAppointmentDialogComponent, {
+      width: '500px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result: Service[]) => {
+      if (result) {
+        for (const service of result) {
+          if (!this.services.some(s => s.id === service.id)) {
+            this.services.push(service);
+          }
+          if (service.id && !this.selectedServices.includes(service.id)) this.selectedServices.push(service.id);
+        }
+      }
+    });
+  }
+
+  openAddVehicleDialog(): void {
+    const dialogRef = this.dialog.open(VehicleFormDialogComponent, {
+      width: '500px',
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result: Vehicle) => {
+      if (result) {
+        this.loadVehicles();
+      }
     });
   }
 }

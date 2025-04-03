@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
-const AutoIncrement = require("mongoose-sequence")(mongoose);
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const VehiculeSchema = new mongoose.Schema(
   {
-    id: { type: Number, unique: true },
     marque: { type: String, required: true },
     modele: { type: String, required: true },
     annee: { type: Number, required: true },
@@ -13,7 +12,14 @@ const VehiculeSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-// VehiculeSchema.plugin(AutoIncrement, { inc_field: "id" });
+VehiculeSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
+VehiculeSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Vehicule", VehiculeSchema);

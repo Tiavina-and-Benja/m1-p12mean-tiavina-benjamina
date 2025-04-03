@@ -1,7 +1,8 @@
 export interface Vehicle {
     id?: string;
-    brand: string | null | undefined;
-    model: string | null | undefined;
-    licensePlate: string | null | undefined;
-    year: number | null | undefined;
+    marque: string | null | undefined;
+    modele: string | null | undefined;
+    immatriculation: string | null | undefined;
+    annee: number | null | undefined;
+    type_carburant: string | null | undefined;
 }

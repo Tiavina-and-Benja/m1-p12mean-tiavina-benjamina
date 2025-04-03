@@ -20,7 +20,6 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class ServiceCrudComponent implements OnInit {
   displayedColumns: string[] = ['name', 'price', 'description', 'actions'];
-
   dataSource: MatTableDataSource<Service>;
   serviceForm: FormGroup;
   paginator: Paginator = {

@@ -1,0 +1,27 @@
+<mat-card [routerLink]="['/vehicles/' + vehicle.id]">
+  <mat-card-content>
+    <div class="card-container row justify-content-start">
+      <div class="vehicle-icon col-auto">
+        <mat-icon class="vehicle-icon"> directions_car </mat-icon>
+      </div>
+      <div class="vehicle-info col">
+        <p><strong>Marque: </strong> {{ vehicle.marque }}</p>
+        <p><strong>Modèle: </strong> {{ vehicle.modele }}</p>
+        <p><strong>Année: </strong> {{ vehicle.annee }}</p>
+        <p>
+          <strong>Numéro d'immatriculation: </strong>
+          {{ vehicle.immatriculation }}
+        </p>
+        <p><strong>Carburant: </strong> {{ vehicle.type_carburant }}</p>
+      </div>
+      <div class="actions col-auto justify-content-end">
+        <button mat-icon-button (click)="update.emit(vehicle)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button [color]="'warn'">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

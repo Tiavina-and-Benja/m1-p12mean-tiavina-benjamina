@@ -17,12 +17,11 @@ exports.createService = async (req, res, next) => {
 };
 
 exports.getPaginatedService = async (req, res, next) => {
-  const { page, limit, sortField, sortOrder, searchText } = req.params;
-
+  const { page, limit, sortField, sortOrder, search } = req.query;
   try {
     const services = await ServiceService.findPaginatedService(
       {},
-      { page, limit, sort: { field: sortField, order: sortOrder, searchText } }
+      { page, limit, sort: { field: sortField, order: sortOrder }, search }
     );
     res.status(200).json(services);
   } catch (error) {

@@ -4,11 +4,12 @@ import { Vehicle } from "./vehicle.model";
 
 
 export interface Appointment {
-    _id?: string;
+    id?: string;
     clientId: string | User; 
     vehicleId: string | Vehicle; 
     mechanicIds: (string | User)[];
-    appointmentDate: Date;
+    date: Date;
+    time: string;
     status: "pending" | "in progress" | "completed" | "canceled";
     services: Service[];
     remarks?: string;

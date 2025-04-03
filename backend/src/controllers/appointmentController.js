@@ -2,7 +2,6 @@ const appointmentService = require("../services/appointmentService");
 const authService = require("../services/authService");
 const serviceService = require("../services/serviceService");
 
-
 exports.getAppointmentById = async (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
   const appointmentId = req.params.appointmentId;
@@ -16,14 +15,42 @@ exports.getAppointmentById = async (req, res, next) => {
   }
 };
 
+exports.getAllAppointments = async (req, res, next) => {
+  try {
+    const appointments = await appointmentService.getAllAppointments();
+    res.status(200).json(appointments);
+  } catch (error) {
+    next(error);
+  }
+};
 
 exports.getAppointmentByClient = async (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
-  const clientId = await authService.getUser(token);
+  const clientId = (await authService.getUser(token)).id;
+  const { page, limit, sortField, sortOrder, search } = req.query;
+  console.log("CLIENTID", clientId);
   try {
-    const appointments = await appointmentService.getAppointmentsByClient(
-      clientId
-    );
+    const appointments =
+      await appointmentService.getPaginatedAppointmentsByClient(
+        { clientId },
+        { page, limit, sort: { field: sortField, order: sortOrder }, search }
+      );
+    res.status(200).json(appointments);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getAppointmentByMecanicien = async (req, res, next) => {
+  const token = req.header("Authorization")?.split(" ")[1];
+  const id = (await authService.getUser(token)).id;
+  const { page, limit, sortField, sortOrder, search } = req.query;
+  try {
+    const appointments =
+      await appointmentService.getPaginatedAppointmentsByMechanic(
+        id,
+        { page, limit, sort: { field: sortField, order: sortOrder }, search }
+      );
     res.status(200).json(appointments);
   } catch (error) {
     next(error);
@@ -31,16 +58,14 @@ exports.getAppointmentByClient = async (req, res, next) => {
 };
 
 exports.createAppointment = async (req, res, next) => {
-  // TODO: include vehicles
-  const { date, time, services } = req.body;
+  const { date, time, services, vehicleId } = req.body;
   const token = req.header("Authorization")?.split(" ")[1];
   const clientId = (await authService.getUser(token)).id;
 
   try {
     const appointment = await appointmentService.createAppointment({
       clientId,
-      // TODO: include later
-      // vehicleId,
+      vehicleId,
       date,
       time,
       services: await serviceService.findServicesByIds(services),
@@ -57,6 +82,19 @@ exports.addMechanicToAppointment = async (req, res, next) => {
     const appointment = await appointmentService.addMechanicToAppointment(
       appointmentId,
       mechanicId
+    );
+    res.status(201).json(appointment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.addMechanicsToAppointment = async (req, res, next) => {
+  const { appointmentId, mechanicIds } = req.body;
+  try {
+    const appointment = await appointmentService.addMechanicsToAppointment(
+      appointmentId,
+      mechanicIds
     );
     res.status(201).json(appointment);
   } catch (error) {
@@ -100,7 +138,9 @@ exports.updateServiceStatusInAppointment = async (req, res, next) => {
   const { status } = req.body; // `status` doit être "pending", "in progress" ou "completed"
 
   try {
-    const appointment = await appointmentService.getAppointmentById(appointmentId);
+    const appointment = await appointmentService.getAppointmentById(
+      appointmentId
+    );
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found" });
     }
@@ -113,7 +153,11 @@ exports.updateServiceStatusInAppointment = async (req, res, next) => {
     // }
 
     // Sauvegarder l'appointment mis à jour
-    const updatedAppointment = await appointmentService.updateServiceStatus(appointmentId, serviceId, status);
+    const updatedAppointment = await appointmentService.updateServiceStatus(
+      appointmentId,
+      serviceId,
+      status
+    );
 
     res.status(200).json(updatedAppointment);
   } catch (error) {

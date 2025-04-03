@@ -52,8 +52,6 @@ export class ServiceFormDialogComponent {
       ...this.serviceForm.value,
     };
 
-    console.log("EDIT_MODE", this.isEditMode);
-    console.log("EDIT_MODE_ID", this.data?.service?.id);
     if (this.isEditMode && this.data?.service?.id) {
       serviceData.id = this.data.service.id;
       this.serviceService

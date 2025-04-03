@@ -13,7 +13,23 @@ const UserSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+UserSchema.set("toObject", {
+  virtuals: true,
+  versionKey: false,
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
 
+UserSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
 UserSchema.index({ first_name: 'text', last_name: 'text', email: 'text', phone: 'text' });
 UserSchema.plugin(mongoosePaginate);
 

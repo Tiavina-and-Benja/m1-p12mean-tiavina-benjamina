@@ -129,16 +129,28 @@ class UserService {
     try {
       page = parseInt(page);
       limit = parseInt(limit);
-      
+
       const dynamicSort =
         sort && sort.field !== ""
           ? { [sort.field]: sort.order === "desc" ? -1 : 1 }
           : { createdAt: -1 };
 
       if (search) {
+        
+        const searchTerms = search
+          .split(" ")
+          .filter((term) => term.trim() !== "");
+
         criteria = {
           ...criteria,
-          $text: { $search: search },
+          $and: searchTerms.map((term) => ({
+            $or: [
+              { first_name: { $regex: term, $options: "i" } },
+              { last_name: { $regex: term, $options: "i" } },
+              { phone: { $regex: term, $options: "i" } },
+              { email: { $regex: term, $options: "i" } },
+            ],
+          })),
         };
       }
 
