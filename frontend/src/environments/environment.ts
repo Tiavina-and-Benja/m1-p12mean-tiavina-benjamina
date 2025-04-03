@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api',
+  apiUrl: 'https://m1-p12mean-tiavina-benjamina.onrender.com/api',
   debugMode: true,
 };
