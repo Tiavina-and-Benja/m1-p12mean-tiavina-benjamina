@@ -27,6 +27,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/vehicules", vehiculeRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/appointments", appointmentRoutes);
+app.get('/health', (req, res) => res.send('OK'));
+
 
 // Gestion des erreurs
 app.use(errorMiddleware);
