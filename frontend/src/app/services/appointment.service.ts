@@ -14,6 +14,24 @@ export class AppointmentService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+  updateServiceStatus(appointmentId: string, serviceId: string, newStatus: string): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<Appointment>(`${this.apiUrl}/${appointmentId}/services/${serviceId}/status`, {status: newStatus}, { headers });
+  }
+
+  payAppointment(appointmentId: string): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<Appointment>(`${this.apiUrl}/${appointmentId}/pay`, {isPaid: true}, { headers });
+  }
+
   addApointment(data: Appointment): Observable<Appointment> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({

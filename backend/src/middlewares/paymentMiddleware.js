@@ -1,5 +1,6 @@
 const Appointment = require("../models/Appointment");
 const MyError = require("../errors/MyError");
+const { ERROR } = require("../errors/errors");
 
 const paymentMiddleware = async (req, res, next) => {
   try {
@@ -13,7 +14,7 @@ const paymentMiddleware = async (req, res, next) => {
     }
 
     if (appointment.status !== "completed") {
-      throw new MyError("L'appointment doit être complété avant d'être payé.", 400);
+      throw ERROR.BAD_REQUEST(message="Le rendez-vous doit d'abord être effectué", 'appointment_not_completed');
     }
 
     if (typeof isPaid !== "boolean") {

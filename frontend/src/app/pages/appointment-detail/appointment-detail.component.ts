@@ -29,6 +29,7 @@ export class AppointmentDetailComponent {
   mechanicDataSource: MatTableDataSource<User>;
   mechanicDisplayedColumn: string[] = ['name', 'email', 'phone'];
   actualStatus: string = '';
+  isPaid: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -121,4 +122,19 @@ export class AppointmentDetailComponent {
     });
   }
 
+  payAppointment(): void {
+    if (!this.appointmentId) return;
+    this.appointmentService.payAppointment(this.appointmentId)
+    .subscribe(result=>{
+      this.isPaid = true; 
+    });
+  }
+
+  changeStatusService(newValue: string, serviceId: string): void {
+    if (!this.appointmentId) return;
+    this.appointmentService.updateServiceStatus(this.appointmentId, serviceId, newValue)
+    .subscribe(result=> {
+      console.log("Service status updated");
+    });
+  }
 }

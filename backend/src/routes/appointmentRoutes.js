@@ -22,7 +22,7 @@ router.get("/:appointmentId", authenticateToken, appointmentController.getAppoin
 router.put("/:appointmentId/validate", authenticateToken, authorizeProfils(["manager", "user"]),appointmentController.validateAppointment);
 router.put("/:appointmentId/cancel", authenticateToken, authorizeProfils(["manager", "user"]),appointmentController.cancelAppointment);
 router.put("/:appointmentId/add-mechanics", authenticateToken, authorizeProfils(["manager"]),appointmentController.addMechanicsToAppointment);
-router.put("/:appointmentId/services/:serviceId/status", authenticateToken, authorizeProfils(["manager", "user"]), appointmentController.updateServiceStatusInAppointment);
+router.put("/:appointmentId/services/:serviceId/status", authenticateToken, authorizeProfils(["mecanicien"]), appointmentController.updateServiceStatusInAppointment);
 
 
 router.get('/estimate/:appointmentId', appointmentController.getEstimate);

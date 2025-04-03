@@ -18,6 +18,7 @@ import { AddServiceToBookingAppointmentDialogComponent } from './add-service-to-
 import { VehicleFormDialogComponent } from '@app/pages/vehicle-crud/vehicle-form-dialog/vehicle-form-dialog.component';
 import { Vehicle } from '@app/models/vehicle.model';
 import { VehicleService } from '@app/services/vehicle.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-booking-appointment',
@@ -59,7 +60,8 @@ export class ClientBookingAppointmentComponent implements OnInit {
     private fb: FormBuilder,
     private vehicleService: VehicleService,
     private appointmentService: AppointmentService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.appointmentForm = this.fb.group({
       date: new FormControl(new Date()),
@@ -129,7 +131,7 @@ export class ClientBookingAppointmentComponent implements OnInit {
     this.appointmentService
       .addApointment(appointmentData)
       .subscribe((response) => {
-        console.log('Rendez-vous soumis:', this.appointmentForm.value);
+        this.router.navigate(['/appointments/' + response.id]);
       });
   }
 
