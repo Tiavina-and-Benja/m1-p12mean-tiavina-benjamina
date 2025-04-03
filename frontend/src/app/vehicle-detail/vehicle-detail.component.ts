@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MaterialModule } from '@app/material.module';
 import { Reparation } from '@app/models/reparation.model';
-import { Service } from '@app/models/service.model';
-import { User } from '@app/models/user.model';
 
 @Component({
-  selector: 'app-vehicule-detail',
+  selector: 'app-vehicle-detail',
   imports: [MaterialModule],
-  templateUrl: './vehicule-detail.component.html',
-  styleUrl: './vehicule-detail.component.scss'
+  templateUrl: './vehicle-detail.component.html',
+  styleUrl: './vehicle-detail.component.scss'
 })
-export class VehiculeDetailComponent implements OnInit {
+export class VehicleDetailComponent {
   displayedColumns: string[] = ['serviceName', 'mechanics' ];
   dataSource: MatTableDataSource<Reparation>;
 

@@ -10,6 +10,7 @@ import { Vehicle } from '@app/models/vehicle.model';
 import { AppointmentService } from '@app/services/appointment.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddMechanicToAppointmentDialogComponent } from './add-mechanic-to-appointment-dialog/add-mechanic-to-appointment-dialog.component';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -18,6 +19,7 @@ import { AddMechanicToAppointmentDialogComponent } from './add-mechanic-to-appoi
   styleUrl: './appointment-detail.component.scss',
 })
 export class AppointmentDetailComponent {
+  role: string | null = null;
   appointmentId: string | null = null;
   appointment: Appointment | null = null;
   client: User | null = null;
@@ -29,6 +31,7 @@ export class AppointmentDetailComponent {
   actualStatus: string = '';
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private appointmentService: AppointmentService
@@ -40,6 +43,10 @@ export class AppointmentDetailComponent {
   ngOnInit(): void {
     this.appointmentId = this.route.snapshot.paramMap.get('id');
     this.loadAppointment();
+    
+    this.authService.role$.subscribe(role => {
+      this.role = role;
+    });
   }
 
   loadAppointment() {
@@ -82,7 +89,7 @@ export class AppointmentDetailComponent {
     const dialogRef = this.dialog.open(
       AddMechanicToAppointmentDialogComponent,
       {
-        width: '500px',
+        width: '900px',
         data: {appointmentId: this.appointmentId},
       }
     );

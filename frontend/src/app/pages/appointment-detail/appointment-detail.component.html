@@ -45,7 +45,7 @@
       <mat-card-title>
         <h3>Mécaniciens attribués</h3>
       </mat-card-title>
-      <button mat-icon-button (click)="openAddMechanicDialog()">
+      <button mat-icon-button (click)="openAddMechanicDialog()" *ngIf="role === 'manager'">
         <mat-icon>add</mat-icon>
       </button>
     </mat-card-header>
@@ -126,7 +126,7 @@
   </mat-card>
 </div>
 
-<div class="w-100 justify-content-end button-container" *ngIf="appointment?.status === 'pending'">
+<div class="w-100 justify-content-end button-container" *ngIf="appointment?.status === 'pending' && role === 'manager'">
   <button mat-flat-button (click)="cancelAppointment()">Refuser</button>
   <button mat-flat-button (click)="validateAppointment()">Valider</button>
 </div>

@@ -7,10 +7,10 @@ import { NotAuthGuard } from './guards/not-auth.guard';
 import { MechanicCrudComponent } from './pages/mechanic-crud/mechanic-crud.component';
 import { ServiceCrudComponent } from './pages/service-crud/service-crud.component';
 import { VehicleCrudComponent } from './pages/vehicle-crud/vehicle-crud.component';
-import { VehiculeDetailComponent } from './pages/vehicule-crud/vehicule-detail/vehicule-detail.component';
 import { AppointmentsComponent } from './pages/appointments/appointments.component';
 import { AppointmentDetailComponent } from './pages/appointment-detail/appointment-detail.component';
 import { ClientBookingAppointmentComponent } from './pages/appointments/client/client-booking-appointment/client-booking-appointment.component';
+import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
 
 export const routes: Routes = [
   {
@@ -53,7 +53,7 @@ export const routes: Routes = [
       },
       {
         path: 'vehicles/:id',
-        component: VehiculeDetailComponent,
+        component: VehicleDetailComponent,
         canActivate: [RoleGuard],
         data: { roles: ['user'] },
       },

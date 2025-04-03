@@ -36,7 +36,7 @@ export class AppointmentService {
 
   getClientAppointments(
     page: number = 1,
-    limit: number = 10,
+    limit: number = 25,
     sortField: string = '',
     sortOrder: string = '',
     searchTerm: string = ''
@@ -64,7 +64,7 @@ export class AppointmentService {
 
   getMechanicsAppointments(
     page: number = 1,
-    limit: number = 10,
+    limit: number = 25,
     sortField: string = '',
     sortOrder: string = '',
     searchTerm: string = ''
