@@ -49,6 +49,13 @@ const appointmentSchema = new mongoose.Schema(
           enum: ["pending", "in progress", "completed"],
           default: "pending",
         },
+        parts: [
+          {
+            name: { type: String, required: true },
+            quantity: { type: Number, required: true, min: 1 },
+            serialNumber: { type: String, default: "" },
+          },
+        ],
       },
     ],
     remarks: {
