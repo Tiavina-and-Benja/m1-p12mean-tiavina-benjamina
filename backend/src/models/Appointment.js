@@ -38,6 +38,10 @@ const appointmentSchema = new mongoose.Schema(
       enum: ["pending", "in progress", "completed", "canceled"],
       default: "pending",
     },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
     services: [
       {
         _id: { type: mongoose.Schema.Types.ObjectId, ref : "Service", required: true, },

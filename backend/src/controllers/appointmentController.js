@@ -177,3 +177,29 @@ exports.getEstimate = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+exports.markAsPaid = async (req, res, next) => {
+  const { appointmentId } = req.params;
+
+  try {
+    const appointment = await appointmentService.getAppointmentById(appointmentId);
+
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    if (appointment.status !== "completed") {
+      return res.status(400).json({ message: "Appointment must be completed before marking it as paid" });
+    }
+
+    const updatedAppointment = await appointmentService.updateAppointment(appointmentId, { isPaid: true });
+
+    res.status(200).json({
+      message: "Appointment marked as paid successfully",
+      appointment: updatedAppointment,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
