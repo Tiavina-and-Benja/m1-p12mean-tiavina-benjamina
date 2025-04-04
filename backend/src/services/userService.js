@@ -49,7 +49,7 @@ class UserService {
         profil: userData.profil,
       });
       if (existingUser) {
-        throw ERROR;
+        throw ERROR.RESOURCE_ALREADY_EXISTS();
       }
 
       const newUser = new User(userData);
