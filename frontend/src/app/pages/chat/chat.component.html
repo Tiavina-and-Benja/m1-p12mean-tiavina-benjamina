@@ -1,0 +1,75 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title> Discussion </mat-card-title>
+  </mat-card-header>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <div class="row">
+      <div class="col-lg-4 appointment-list">
+        <mat-card-title>Listes des rendez-vous</mat-card-title>
+        <mat-list>
+          <div *ngFor="let appointment of appointments">
+            <mat-list-item>
+              <mat-icon matListItemAvatar></mat-icon>
+              <span matListItemTitle
+                >{{ extractVehicle(appointment)?.marque }}
+                {{ extractVehicle(appointment)?.modele }}</span
+              >
+              <span matListItemLine>{{ appointment.date | date }}</span>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </div>
+        </mat-list>
+      </div>
+
+      <div class="col-lg-8">
+        <mat-list-item>
+          <mat-icon matListItemAvatar></mat-icon>
+          <h4 matListItemTitle>
+            {{ extractVehicle(actualAppointment)?.marque }}
+            {{ extractVehicle(actualAppointment)?.modele }}
+          </h4>
+          <span matListItemLine>{{ actualAppointment.date | date }}</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <div #messageContainer class="message-container">
+          <div *ngFor="let message of messages" class="message-row" [ngClass]="{ 'my-message': isMyMessage(message), 'other-message': !isMyMessage(message) }">
+            <div class="message-bubble">
+              {{ message.text }}
+            </div>
+          </div>
+        </div>
+        
+        <form
+          #messageForm="ngForm"
+          (ngSubmit)="sendMessage()"
+          class="chat-form"
+        >
+          <mat-form-field class="w-100" appearance="outline">
+            <input
+              matInput
+              type="text"
+              name="message"
+              [(ngModel)]="newMessage"
+              required
+              minlength="2"
+              placeholder="Écrivez votre message"
+            />
+
+            <button
+              mat-icon-button
+              matSuffix
+              color="primary"
+              type="submit"
+              [disabled]="messageForm.invalid"
+            >
+              <mat-icon>send</mat-icon>
+            </button>
+          </mat-form-field>
+        </form>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

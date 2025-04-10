@@ -5,6 +5,7 @@ import { environment } from '@environments/environment';
 import { Observable, of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { PaginatedResult } from '@app/models/util.model';
+import { Part } from '@app/models/part.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,13 +15,52 @@ export class AppointmentService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  updateServiceStatus(appointmentId: string, serviceId: string, newStatus: string): Observable<any> {
+  sendMessage(appointmentId: string, text: string): Observable<any> {
+    console.log("MESSAGES", "ON_SEND");
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.put<Appointment>(`${this.apiUrl}/${appointmentId}/services/${serviceId}/status`, {status: newStatus}, { headers });
+    return this.http.post<any>(
+      `${this.apiUrl}/${appointmentId}/messages`,
+      { text },
+      { headers }
+    );
+  }
+
+  addPartToService(
+    appointmentId: string,
+    serviceId: string,
+    parts: Part[]
+  ): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<Appointment>(
+      `${this.apiUrl}/${appointmentId}/services/${serviceId}/add-part`,
+      { parts },
+      { headers }
+    );
+  }
+
+  updateServiceStatus(
+    appointmentId: string,
+    serviceId: string,
+    newStatus: string
+  ): Observable<any> {
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.put<Appointment>(
+      `${this.apiUrl}/${appointmentId}/services/${serviceId}/status`,
+      { status: newStatus },
+      { headers }
+    );
   }
 
   payAppointment(appointmentId: string): Observable<any> {
@@ -29,7 +69,11 @@ export class AppointmentService {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.put<Appointment>(`${this.apiUrl}/${appointmentId}/pay`, {isPaid: true}, { headers });
+    return this.http.put<Appointment>(
+      `${this.apiUrl}/${appointmentId}/pay`,
+      { isPaid: true },
+      { headers }
+    );
   }
 
   addApointment(data: Appointment): Observable<Appointment> {
@@ -102,10 +146,13 @@ export class AppointmentService {
       params = params.set('search', searchTerm);
     }
 
-    return this.http.get<PaginatedResult<Appointment>>(`${this.apiUrl}/mecaniciens`, {
-      headers,
-      params,
-    });
+    return this.http.get<PaginatedResult<Appointment>>(
+      `${this.apiUrl}/mecaniciens`,
+      {
+        headers,
+        params,
+      }
+    );
   }
 
   getAllAppointments(): Observable<Appointment[]> {
@@ -127,9 +174,13 @@ export class AppointmentService {
       'Content-Type': 'application/json',
     });
 
-    return this.http.put<any>(`${this.apiUrl}/${appointmentId}/validate`, {}, {
-      headers,
-    });
+    return this.http.put<any>(
+      `${this.apiUrl}/${appointmentId}/validate`,
+      {},
+      {
+        headers,
+      }
+    );
   }
 
   cancelAppointment(appointmentId: string): Observable<any> {
@@ -139,19 +190,30 @@ export class AppointmentService {
       'Content-Type': 'application/json',
     });
 
-    return this.http.put<any>(`${this.apiUrl}/${appointmentId}/cancel`, {}, {
-      headers,
-    });
+    return this.http.put<any>(
+      `${this.apiUrl}/${appointmentId}/cancel`,
+      {},
+      {
+        headers,
+      }
+    );
   }
 
-  addMechanicsToAppointment(appointmentId: string, mechanicIds: string[]): Observable<any> {
+  addMechanicsToAppointment(
+    appointmentId: string,
+    mechanicIds: string[]
+  ): Observable<any> {
     const token = this.authService.getToken();
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
-    return this.http.put<any>(`${this.apiUrl}/${appointmentId}/add-mechanics`, {appointmentId, mechanicIds}, {
-      headers,
-    });
+    return this.http.put<any>(
+      `${this.apiUrl}/${appointmentId}/add-mechanics`,
+      { appointmentId, mechanicIds },
+      {
+        headers,
+      }
+    );
   }
 }

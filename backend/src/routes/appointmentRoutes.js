@@ -27,9 +27,9 @@ router.put("/:appointmentId/services/:serviceId/status", authenticateToken, auth
 
 router.get('/estimate/:appointmentId', appointmentController.getEstimate);
 
-router.put("/:appointmentId/pay", authenticateToken, authorizeProfils(["manager", "mecanicien"]), paymentMiddleware, appointmentController.markAsPaid );
+router.put("/:appointmentId/pay", authenticateToken, authorizeProfils(["manager"]), paymentMiddleware, appointmentController.markAsPaid );
 
-router.put("/:appointmentId/services/:serviceId/add-part", authenticateToken, authorizeProfils(["mecanicien", "user"]), appointmentController.addPartToService);
+router.put("/:appointmentId/services/:serviceId/add-part", authenticateToken, authorizeProfils(["mecanicien"]), appointmentController.addPartToService);
   
 router.post("/:appointmentId/messages", appointmentController.addMessage);
 

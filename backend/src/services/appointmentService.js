@@ -42,9 +42,9 @@ class AppointmentService {
   // Récupérer un rendez-vous par ID
   async getAppointmentById(id) {
     try {
-      return await Appointment.findById(id).populate(
-        "clientId vehicleId mechanicIds"
-      );
+      return await Appointment.findById(id)
+        .populate("clientId vehicleId mechanicIds")
+        .populate("messages.senderId");
     } catch (error) {
       throw new Error(`Error fetching appointment: ${error.message}`);
     }
@@ -141,15 +141,12 @@ class AppointmentService {
       page = parseInt(page) || 1;
       limit = parseInt(limit) || 10;
 
-      console.log("MECHANIC_ID", mechanicId);
-
       const dynamicSort =
         sort && sort.field !== ""
           ? { [sort.field]: sort.order === "desc" ? -1 : 1 }
           : { createdAt: -1 };
 
-      let criteria = { mechanicIds: { $in: [mechanicId] } }; 
-      console.log('CRITERIA', criteria);
+      let criteria = { mechanicIds: { $in: [mechanicId] } };
       if (search) {
         const searchTerms = search
           .split(" ")
@@ -173,7 +170,10 @@ class AppointmentService {
         limit,
         sort: dynamicSort,
         populate: [
-          { path: "vehicleId", select: "marque modele immatriculation annee type_carburant" },
+          {
+            path: "vehicleId",
+            select: "marque modele immatriculation annee type_carburant",
+          },
           { path: "clientId", select: "first_name last_name email phone" },
         ],
       });
@@ -290,48 +290,53 @@ class AppointmentService {
 
   async getEstimate(appointmentId) {
     try {
-        const appointment = await Appointment.findById(appointmentId).populate('services');
-        if (!appointment) {
-            throw new Error("Rendez-vous non trouvé.");
-        }
+      const appointment = await Appointment.findById(appointmentId).populate(
+        "services"
+      );
+      if (!appointment) {
+        throw new Error("Rendez-vous non trouvé.");
+      }
 
-        const servicesDetails = appointment.services.map(service => ({
-            name: service.name,
-            price: service.price,
-            description: service.description
-        }));
+      const servicesDetails = appointment.services.map((service) => ({
+        name: service.name,
+        price: service.price,
+        description: service.description,
+      }));
 
-        const totalPrice = servicesDetails.reduce((sum, service) => sum + service.price, 0);
+      const totalPrice = servicesDetails.reduce(
+        (sum, service) => sum + service.price,
+        0
+      );
 
-        return {
-            appointmentId,
-            services: servicesDetails,
-            totalPrice
-        };
+      return {
+        appointmentId,
+        services: servicesDetails,
+        totalPrice,
+      };
     } catch (error) {
-      throw new Error(`Erreur lors de la génération du devis: ${error.message}`);
+      throw new Error(
+        `Erreur lors de la génération du devis: ${error.message}`
+      );
     }
   }
 
-
-  async addPartToService(appointmentId, serviceId, part) {
+  async addPartToService(appointmentId, serviceId, parts) {
     try {
       const appointment = await Appointment.findById(appointmentId);
       if (!appointment) {
         throw new Error("Rendez-vous non trouvé.");
-
       }
-  
+
       const service = appointment.services.find(
         (s) => s._id.toString() === serviceId
       );
       if (!service) {
         throw new Error("Service non trouvé dans le rendez-vous.");
       }
-  
+
       // Ajouter la pièce à la liste des pièces du service
-      service.parts.push(part);
-  
+      service.parts = parts;
+
       await appointment.save();
       return appointment;
     } catch (error) {
@@ -364,4 +369,3 @@ class AppointmentService {
 }
 
 module.exports = new AppointmentService();
-

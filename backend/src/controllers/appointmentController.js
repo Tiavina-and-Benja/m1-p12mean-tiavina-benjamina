@@ -47,10 +47,12 @@ exports.getAppointmentByMecanicien = async (req, res, next) => {
   const { page, limit, sortField, sortOrder, search } = req.query;
   try {
     const appointments =
-      await appointmentService.getPaginatedAppointmentsByMechanic(
-        id,
-        { page, limit, sort: { field: sortField, order: sortOrder }, search }
-      );
+      await appointmentService.getPaginatedAppointmentsByMechanic(id, {
+        page,
+        limit,
+        sort: { field: sortField, order: sortOrder },
+        search,
+      });
     res.status(200).json(appointments);
   } catch (error) {
     next(error);
@@ -165,35 +167,42 @@ exports.updateServiceStatusInAppointment = async (req, res, next) => {
   }
 };
 
-
 exports.getEstimate = async (req, res) => {
   try {
-      const { appointmentId } = req.params;
+    const { appointmentId } = req.params;
 
-      const estimate = await appointmentService.getEstimate(appointmentId);
+    const estimate = await appointmentService.getEstimate(appointmentId);
 
-      res.json(estimate);
+    res.json(estimate);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
 exports.markAsPaid = async (req, res, next) => {
   const { appointmentId } = req.params;
 
   try {
-    const appointment = await appointmentService.getAppointmentById(appointmentId);
+    const appointment = await appointmentService.getAppointmentById(
+      appointmentId
+    );
 
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found" });
     }
 
     if (appointment.status !== "completed") {
-      return res.status(400).json({ message: "Appointment must be completed before marking it as paid" });
+      return res
+        .status(400)
+        .json({
+          message: "Appointment must be completed before marking it as paid",
+        });
     }
 
-    const updatedAppointment = await appointmentService.updateAppointment(appointmentId, { isPaid: true });
+    const updatedAppointment = await appointmentService.updateAppointment(
+      appointmentId,
+      { isPaid: true }
+    );
 
     res.status(200).json({
       message: "Appointment marked as paid successfully",
@@ -204,16 +213,15 @@ exports.markAsPaid = async (req, res, next) => {
   }
 };
 
-
 exports.addPartToService = async (req, res, next) => {
   const { appointmentId, serviceId } = req.params;
-  const { name, quantity, serialNumber } = req.body;
+  const { parts } = req.body;
 
   try {
     const updatedAppointment = await appointmentService.addPartToService(
       appointmentId,
       serviceId,
-      { name, quantity, serialNumber }
+      parts
     );
 
     res.status(200).json(updatedAppointment);
@@ -222,12 +230,11 @@ exports.addPartToService = async (req, res, next) => {
   }
 };
 
-
 exports.addMessage = async (req, res, next) => {
   // const { appointmentId, text } = req.body;
   const { text } = req.body;
-    const { appointmentId } = req.params; // Récupérer l'ID depuis l'URL
-    // console.log("appointmentId reçu dans le controller:", appointmentId);
+  const { appointmentId } = req.params; // Récupérer l'ID depuis l'URL
+  // console.log("appointmentId reçu dans le controller:", appointmentId);
   const token = req.header("Authorization")?.split(" ")[1];
   const senderId = (await authService.getUser(token)).id;
 
