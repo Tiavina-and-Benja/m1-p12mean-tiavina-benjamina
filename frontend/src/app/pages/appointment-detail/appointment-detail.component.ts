@@ -11,6 +11,8 @@ import { AppointmentService } from '@app/services/appointment.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddMechanicToAppointmentDialogComponent } from './add-mechanic-to-appointment-dialog/add-mechanic-to-appointment-dialog.component';
 import { AuthService } from '@app/services/auth.service';
+import { AddPartsToServiceDialogComponent } from './add-parts-to-service-dialog/add-parts-to-service-dialog.component';
+import { Part } from '@app/models/part.model';
 
 @Component({
   selector: 'app-appointment-detail',
@@ -104,6 +106,21 @@ export class AppointmentDetailComponent {
           this.mechanicDataSource.data = [...this.mechanicDataSource.data, ...newMechanics];
         }
       }
+    });
+    
+  }
+
+  openAddPartsToServiceDialog(serviceId: string, parts: Part[]): void {
+    const dialogRef = this.dialog.open(
+      AddPartsToServiceDialogComponent,
+      {
+        width: '900px',
+        data: {appointmentId: this.appointmentId, serviceId, parts},
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result: Part[]) => {
+      this.loadAppointment();
     });
     
   }
