@@ -1,3 +1,4 @@
+import { Message } from "./message.model";
 import { Service } from "./service.model";
 import { User } from "./user.model";
 import { Vehicle } from "./vehicle.model";
@@ -16,4 +17,5 @@ export interface Appointment {
     isPaid?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
+    messages?: Message[];
   }

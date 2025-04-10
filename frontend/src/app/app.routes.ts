@@ -11,6 +11,7 @@ import { AppointmentsComponent } from './pages/appointments/appointments.compone
 import { AppointmentDetailComponent } from './pages/appointment-detail/appointment-detail.component';
 import { ClientBookingAppointmentComponent } from './pages/appointments/client/client-booking-appointment/client-booking-appointment.component';
 import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
+import { ChatComponent } from './pages/chat/chat.component';
 
 export const routes: Routes = [
   {
@@ -62,6 +63,12 @@ export const routes: Routes = [
         component: AppointmentsComponent,
         canActivate: [RoleGuard],
         data: { roles: ['user', 'manager', 'mecanicien']}
+      },
+      {
+        path: 'chat',
+        component: ChatComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['user', 'mecanicien']}
       },
       {
         path: 'appointments/:id',
