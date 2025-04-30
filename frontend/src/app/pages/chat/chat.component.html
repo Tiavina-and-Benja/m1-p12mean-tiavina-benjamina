@@ -11,7 +11,7 @@
         <mat-card-title>Listes des rendez-vous</mat-card-title>
         <mat-list>
           <div *ngFor="let appointment of appointments">
-            <mat-list-item>
+            <mat-list-item (click)="selectMessageContainer(appointment)" class="hoverable">
               <mat-icon matListItemAvatar></mat-icon>
               <span matListItemTitle
                 >{{ extractVehicle(appointment)?.marque }}
