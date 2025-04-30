@@ -89,6 +89,11 @@ export class ChatComponent implements OnInit {
       return message.senderId === this.myId;
     }
   }
+
+  selectMessageContainer(appointment: Appointment): void {
+    this.actualAppointment = appointment;
+    this.messages = appointment.messages || [];
+  }
   
   private scrollToBottom(): void {
     try {
